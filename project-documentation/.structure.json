@@ -1,0 +1,25 @@
+{
+  "repository_root": "D:\\GitHub-Skills\\inspect-skill",
+  "entry_points": [],
+  "entry_points_count": 0,
+  "module_architecture": {
+    "scripts": [
+      "scripts/analyze_repository_structure.py",
+      "scripts/collect_code_evidence.py",
+      "scripts/detect_secrets_safely.py",
+      "scripts/detect_technology_stack.py",
+      "scripts/inventory_repository.py",
+      "scripts/validate_report_evidence.py"
+    ]
+  },
+  "discovered_routes_count": 1,
+  "routes": [
+    {
+      "method": "GET",
+      "endpoint": "/api/users",
+      "defined_in": "test_inspect_repository_scripts.py",
+      "line_number": 83,
+      "snippet": "(repo / \"controllers\" / \"user_controller.py\").write_text('@app.get(\"/api/users\")\\ndef get_users(): pass', encoding=\"utf-8\")"
+    }
+  ]
+}

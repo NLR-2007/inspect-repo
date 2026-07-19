@@ -1,0 +1,16 @@
+sequenceDiagram
+    autonumber
+    actor User
+    participant Agent as User-selected agent
+    participant Skill as SKILL.md workflow
+    participant CLI as Local Python CLI script
+    participant FS as Local repository filesystem
+    User->>Agent: Request repository inspection
+    Agent->>Skill: Load inspection instructions
+    Skill-->>Agent: Select script and arguments
+    Agent->>CLI: Execute with local --root and --output
+    Note over Agent,CLI: No application authentication or authorization layer exists
+    CLI->>FS: Read repository files
+    FS-->>CLI: File metadata or text
+    CLI-->>Agent: JSON result or exit status
+    Agent-->>User: Redacted documentation and findings

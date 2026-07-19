@@ -1,0 +1,180 @@
+{
+  "documentation_directory": "D:\\GitHub-Skills\\inspect-skill\\project-documentation",
+  "repository_root": "D:\\GitHub-Skills\\inspect-skill",
+  "overall_valid": true,
+  "total_reports_validated": 17,
+  "total_broken_links": 0,
+  "total_exposed_secret_warnings": 0,
+  "reports": [
+    {
+      "report_file": "D:\\GitHub-Skills\\inspect-skill\\project-documentation\\API_DOCUMENTATION.md",
+      "is_valid": true,
+      "broken_links_count": 0,
+      "broken_links": [],
+      "unsupported_confirmed_claims_count": 0,
+      "unsupported_confirmed_claims": [],
+      "exposed_secret_warnings_count": 0,
+      "exposed_secret_warnings": []
+    },
+    {
+      "report_file": "D:\\GitHub-Skills\\inspect-skill\\project-documentation\\APPLICATION_FLOWS.md",
+      "is_valid": true,
+      "broken_links_count": 0,
+      "broken_links": [],
+      "unsupported_confirmed_claims_count": 0,
+      "unsupported_confirmed_claims": [],
+      "exposed_secret_warnings_count": 0,
+      "exposed_secret_warnings": []
+    },
+    {
+      "report_file": "D:\\GitHub-Skills\\inspect-skill\\project-documentation\\ARCHITECTURE.md",
+      "is_valid": true,
+      "broken_links_count": 0,
+      "broken_links": [],
+      "unsupported_confirmed_claims_count": 0,
+      "unsupported_confirmed_claims": [],
+      "exposed_secret_warnings_count": 0,
+      "exposed_secret_warnings": []
+    },
+    {
+      "report_file": "D:\\GitHub-Skills\\inspect-skill\\project-documentation\\CODE_QUALITY_REPORT.md",
+      "is_valid": true,
+      "broken_links_count": 0,
+      "broken_links": [],
+      "unsupported_confirmed_claims_count": 0,
+      "unsupported_confirmed_claims": [],
+      "exposed_secret_warnings_count": 0,
+      "exposed_secret_warnings": []
+    },
+    {
+      "report_file": "D:\\GitHub-Skills\\inspect-skill\\project-documentation\\DATABASE_DOCUMENTATION.md",
+      "is_valid": true,
+      "broken_links_count": 0,
+      "broken_links": [],
+      "unsupported_confirmed_claims_count": 0,
+      "unsupported_confirmed_claims": [],
+      "exposed_secret_warnings_count": 0,
+      "exposed_secret_warnings": []
+    },
+    {
+      "report_file": "D:\\GitHub-Skills\\inspect-skill\\project-documentation\\DEPLOYMENT_GUIDE.md",
+      "is_valid": true,
+      "broken_links_count": 0,
+      "broken_links": [],
+      "unsupported_confirmed_claims_count": 0,
+      "unsupported_confirmed_claims": [],
+      "exposed_secret_warnings_count": 0,
+      "exposed_secret_warnings": []
+    },
+    {
+      "report_file": "D:\\GitHub-Skills\\inspect-skill\\project-documentation\\EVIDENCE_LEDGER.md",
+      "is_valid": true,
+      "broken_links_count": 0,
+      "broken_links": [],
+      "unsupported_confirmed_claims_count": 0,
+      "unsupported_confirmed_claims": [],
+      "exposed_secret_warnings_count": 0,
+      "exposed_secret_warnings": []
+    },
+    {
+      "report_file": "D:\\GitHub-Skills\\inspect-skill\\project-documentation\\MODULE_DOCUMENTATION.md",
+      "is_valid": true,
+      "broken_links_count": 0,
+      "broken_links": [],
+      "unsupported_confirmed_claims_count": 0,
+      "unsupported_confirmed_claims": [],
+      "exposed_secret_warnings_count": 0,
+      "exposed_secret_warnings": []
+    },
+    {
+      "report_file": "D:\\GitHub-Skills\\inspect-skill\\project-documentation\\PRODUCTION_READINESS.md",
+      "is_valid": true,
+      "broken_links_count": 0,
+      "broken_links": [],
+      "unsupported_confirmed_claims_count": 0,
+      "unsupported_confirmed_claims": [],
+      "exposed_secret_warnings_count": 0,
+      "exposed_secret_warnings": []
+    },
+    {
+      "report_file": "D:\\GitHub-Skills\\inspect-skill\\project-documentation\\PROJECT_OVERVIEW.md",
+      "is_valid": true,
+      "broken_links_count": 0,
+      "broken_links": [],
+      "unsupported_confirmed_claims_count": 0,
+      "unsupported_confirmed_claims": [],
+      "exposed_secret_warnings_count": 0,
+      "exposed_secret_warnings": []
+    },
+    {
+      "report_file": "D:\\GitHub-Skills\\inspect-skill\\project-documentation\\PROJECT_RESEARCH_REPORT.md",
+      "is_valid": true,
+      "broken_links_count": 0,
+      "broken_links": [],
+      "unsupported_confirmed_claims_count": 0,
+      "unsupported_confirmed_claims": [],
+      "exposed_secret_warnings_count": 0,
+      "exposed_secret_warnings": []
+    },
+    {
+      "report_file": "D:\\GitHub-Skills\\inspect-skill\\project-documentation\\RECOMMENDATIONS.md",
+      "is_valid": true,
+      "broken_links_count": 0,
+      "broken_links": [],
+      "unsupported_confirmed_claims_count": 0,
+      "unsupported_confirmed_claims": [],
+      "exposed_secret_warnings_count": 0,
+      "exposed_secret_warnings": []
+    },
+    {
+      "report_file": "D:\\GitHub-Skills\\inspect-skill\\project-documentation\\REPOSITORY_STRUCTURE.md",
+      "is_valid": true,
+      "broken_links_count": 0,
+      "broken_links": [],
+      "unsupported_confirmed_claims_count": 0,
+      "unsupported_confirmed_claims": [],
+      "exposed_secret_warnings_count": 0,
+      "exposed_secret_warnings": []
+    },
+    {
+      "report_file": "D:\\GitHub-Skills\\inspect-skill\\project-documentation\\RISKS_AND_LIMITATIONS.md",
+      "is_valid": true,
+      "broken_links_count": 0,
+      "broken_links": [],
+      "unsupported_confirmed_claims_count": 0,
+      "unsupported_confirmed_claims": [],
+      "exposed_secret_warnings_count": 0,
+      "exposed_secret_warnings": []
+    },
+    {
+      "report_file": "D:\\GitHub-Skills\\inspect-skill\\project-documentation\\SECURITY_AUDIT.md",
+      "is_valid": true,
+      "broken_links_count": 0,
+      "broken_links": [],
+      "unsupported_confirmed_claims_count": 0,
+      "unsupported_confirmed_claims": [],
+      "exposed_secret_warnings_count": 0,
+      "exposed_secret_warnings": []
+    },
+    {
+      "report_file": "D:\\GitHub-Skills\\inspect-skill\\project-documentation\\TECHNOLOGY_STACK.md",
+      "is_valid": true,
+      "broken_links_count": 0,
+      "broken_links": [],
+      "unsupported_confirmed_claims_count": 0,
+      "unsupported_confirmed_claims": [],
+      "exposed_secret_warnings_count": 0,
+      "exposed_secret_warnings": []
+    },
+    {
+      "report_file": "D:\\GitHub-Skills\\inspect-skill\\project-documentation\\TESTING_REPORT.md",
+      "is_valid": true,
+      "broken_links_count": 0,
+      "broken_links": [],
+      "unsupported_confirmed_claims_count": 0,
+      "unsupported_confirmed_claims": [],
+      "exposed_secret_warnings_count": 0,
+      "exposed_secret_warnings": []
+    }
+  ]
+}

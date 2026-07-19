@@ -1,0 +1,423 @@
+{
+  "repository_root": "D:\\GitHub-Skills\\inspect-skill",
+  "file_path": "scripts/validate_report_evidence.py",
+  "total_file_lines": 147,
+  "requested_range": {
+    "start": 16,
+    "end": 117
+  },
+  "returned_range": {
+    "start": 16,
+    "end": 117
+  },
+  "lines": [
+    {
+      "line_number": 16,
+      "content": "# Match file links in markdown: [link text](path) or file:///path"
+    },
+    {
+      "line_number": 17,
+      "content": "FILE_LINK_PATTERN = r'\\[([^\\]]+)\\]\\((?:file://(?:/[A-Za-z]:)?)?([^#\\)\\s]+)(?:#[^\\)]*)?\\)'"
+    },
+    {
+      "line_number": 18,
+      "content": "CONFIRMED_CLAIM_PATTERN = r'(?i)\\bCONFIRMED\\b'"
+    },
+    {
+      "line_number": 19,
+      "content": "SECRET_LIKE_PATTERN = r'(ghp_[A-Za-z0-9_]{36}|sk-[A-Za-z0-9]{32,}|AKIA[0-9A-Z]{16})'"
+    },
+    {
+      "line_number": 20,
+      "content": ""
+    },
+    {
+      "line_number": 21,
+      "content": "def validate_markdown_report(report_path: Path, repo_root: Path) -> dict:"
+    },
+    {
+      "line_number": 22,
+      "content": "    \"\"\"Validate a single markdown report against repository state.\"\"\""
+    },
+    {
+      "line_number": 23,
+      "content": "    content = report_path.read_text(encoding=\"utf-8\", errors=\"ignore\")"
+    },
+    {
+      "line_number": 24,
+      "content": "    lines = content.splitlines()"
+    },
+    {
+      "line_number": 25,
+      "content": ""
+    },
+    {
+      "line_number": 26,
+      "content": "    broken_links = []"
+    },
+    {
+      "line_number": 27,
+      "content": "    unsupported_confirmed_claims = []"
+    },
+    {
+      "line_number": 28,
+      "content": "    exposed_secret_warnings = []"
+    },
+    {
+      "line_number": 29,
+      "content": "    lines_without_confidence = []"
+    },
+    {
+      "line_number": 30,
+      "content": ""
+    },
+    {
+      "line_number": 31,
+      "content": "    for idx, line in enumerate(lines, 1):"
+    },
+    {
+      "line_number": 32,
+      "content": "        # 1. Check file links"
+    },
+    {
+      "line_number": 33,
+      "content": "        for match in re.finditer(FILE_LINK_PATTERN, line):"
+    },
+    {
+      "line_number": 34,
+      "content": "            text = match.group(1)"
+    },
+    {
+      "line_number": 35,
+      "content": "            target_path_str = match.group(2)"
+    },
+    {
+      "line_number": 36,
+      "content": ""
+    },
+    {
+      "line_number": 37,
+      "content": "            # Skip web URLs"
+    },
+    {
+      "line_number": 38,
+      "content": "            if target_path_str.startswith(\"http://\") or target_path_str.startswith(\"https://\"):"
+    },
+    {
+      "line_number": 39,
+      "content": "                continue"
+    },
+    {
+      "line_number": 40,
+      "content": ""
+    },
+    {
+      "line_number": 41,
+      "content": "            # Normalize path"
+    },
+    {
+      "line_number": 42,
+      "content": "            clean_path = target_path_str.lstrip(\"/\")"
+    },
+    {
+      "line_number": 43,
+      "content": "            if \":\" in clean_path and os.name == \"nt\": # handle drive letters"
+    },
+    {
+      "line_number": 44,
+      "content": "                resolved_target = Path(target_path_str)"
+    },
+    {
+      "line_number": 45,
+      "content": "            else:"
+    },
+    {
+      "line_number": 46,
+      "content": "                resolved_target = (repo_root / clean_path).resolve()"
+    },
+    {
+      "line_number": 47,
+      "content": ""
+    },
+    {
+      "line_number": 48,
+      "content": "            if not resolved_target.exists():"
+    },
+    {
+      "line_number": 49,
+      "content": "                broken_links.append({"
+    },
+    {
+      "line_number": 50,
+      "content": "                    \"line_number\": idx,"
+    },
+    {
+      "line_number": 51,
+      "content": "                    \"link_text\": text,"
+    },
+    {
+      "line_number": 52,
+      "content": "                    \"target_path\": target_path_str,"
+    },
+    {
+      "line_number": 53,
+      "content": "                    \"issue\": \"Referenced file path does not exist in repository\""
+    },
+    {
+      "line_number": 54,
+      "content": "                })"
+    },
+    {
+      "line_number": 55,
+      "content": ""
+    },
+    {
+      "line_number": 56,
+      "content": "        # 2. Check unredacted secret patterns in documentation text"
+    },
+    {
+      "line_number": 57,
+      "content": "        secret_match = re.search(SECRET_LIKE_PATTERN, line)"
+    },
+    {
+      "line_number": 58,
+      "content": "        if secret_match:"
+    },
+    {
+      "line_number": 59,
+      "content": "            exposed_secret_warnings.append({"
+    },
+    {
+      "line_number": 60,
+      "content": "                \"line_number\": idx,"
+    },
+    {
+      "line_number": 61,
+      "content": "                \"secret_snippet\": secret_match.group(0)[:10] + \"...\","
+    },
+    {
+      "line_number": 62,
+      "content": "                \"issue\": \"Unredacted secret key pattern detected in report text!\""
+    },
+    {
+      "line_number": 63,
+      "content": "            })"
+    },
+    {
+      "line_number": 64,
+      "content": ""
+    },
+    {
+      "line_number": 65,
+      "content": "        # 3. Check claims without explicit evidence link on CONFIRMED findings"
+    },
+    {
+      "line_number": 66,
+      "content": "        if re.search(CONFIRMED_CLAIM_PATTERN, line):"
+    },
+    {
+      "line_number": 67,
+      "content": "            if \"file://\" not in line and \"(\" not in line and \".py\" not in line and \".js\" not in line:"
+    },
+    {
+      "line_number": 68,
+      "content": "                unsupported_confirmed_claims.append({"
+    },
+    {
+      "line_number": 69,
+      "content": "                    \"line_number\": idx,"
+    },
+    {
+      "line_number": 70,
+      "content": "                    \"line_content\": line.strip()[:100],"
+    },
+    {
+      "line_number": 71,
+      "content": "                    \"issue\": \"CONFIRMED finding lacks explicit evidence path or file reference\""
+    },
+    {
+      "line_number": 72,
+      "content": "                })"
+    },
+    {
+      "line_number": 73,
+      "content": ""
+    },
+    {
+      "line_number": 74,
+      "content": "    is_valid = len(broken_links) == 0 and len(exposed_secret_warnings) == 0"
+    },
+    {
+      "line_number": 75,
+      "content": ""
+    },
+    {
+      "line_number": 76,
+      "content": "    return {"
+    },
+    {
+      "line_number": 77,
+      "content": "        \"report_file\": str(report_path),"
+    },
+    {
+      "line_number": 78,
+      "content": "        \"is_valid\": is_valid,"
+    },
+    {
+      "line_number": 79,
+      "content": "        \"broken_links_count\": len(broken_links),"
+    },
+    {
+      "line_number": 80,
+      "content": "        \"broken_links\": broken_links,"
+    },
+    {
+      "line_number": 81,
+      "content": "        \"unsupported_confirmed_claims_count\": len(unsupported_confirmed_claims),"
+    },
+    {
+      "line_number": 82,
+      "content": "        \"unsupported_confirmed_claims\": unsupported_confirmed_claims,"
+    },
+    {
+      "line_number": 83,
+      "content": "        \"exposed_secret_warnings_count\": len(exposed_secret_warnings),"
+    },
+    {
+      "line_number": 84,
+      "content": "        \"exposed_secret_warnings\": exposed_secret_warnings"
+    },
+    {
+      "line_number": 85,
+      "content": "    }"
+    },
+    {
+      "line_number": 86,
+      "content": ""
+    },
+    {
+      "line_number": 87,
+      "content": "def validate_all_reports(docs_dir: str, repo_root: str) -> dict:"
+    },
+    {
+      "line_number": 88,
+      "content": "    \"\"\"Validate all markdown files inside project-documentation/.\"\"\""
+    },
+    {
+      "line_number": 89,
+      "content": "    docs_path = Path(docs_dir).resolve()"
+    },
+    {
+      "line_number": 90,
+      "content": "    root_path = Path(repo_root).resolve()"
+    },
+    {
+      "line_number": 91,
+      "content": ""
+    },
+    {
+      "line_number": 92,
+      "content": "    if not docs_path.exists():"
+    },
+    {
+      "line_number": 93,
+      "content": "        raise ValueError(f\"Documentation directory does not exist: {docs_dir}\")"
+    },
+    {
+      "line_number": 94,
+      "content": "    if not root_path.exists():"
+    },
+    {
+      "line_number": 95,
+      "content": "        raise ValueError(f\"Repository root directory does not exist: {repo_root}\")"
+    },
+    {
+      "line_number": 96,
+      "content": ""
+    },
+    {
+      "line_number": 97,
+      "content": "    results = []"
+    },
+    {
+      "line_number": 98,
+      "content": "    overall_valid = True"
+    },
+    {
+      "line_number": 99,
+      "content": "    total_broken_links = 0"
+    },
+    {
+      "line_number": 100,
+      "content": "    total_secret_warnings = 0"
+    },
+    {
+      "line_number": 101,
+      "content": ""
+    },
+    {
+      "line_number": 102,
+      "content": "    for md_file in docs_path.glob(\"**/*.md\"):"
+    },
+    {
+      "line_number": 103,
+      "content": "        report_res = validate_markdown_report(md_file, root_path)"
+    },
+    {
+      "line_number": 104,
+      "content": "        results.append(report_res)"
+    },
+    {
+      "line_number": 105,
+      "content": "        if not report_res[\"is_valid\"]:"
+    },
+    {
+      "line_number": 106,
+      "content": "            overall_valid = False"
+    },
+    {
+      "line_number": 107,
+      "content": "        total_broken_links += report_res[\"broken_links_count\"]"
+    },
+    {
+      "line_number": 108,
+      "content": "        total_secret_warnings += report_res[\"exposed_secret_warnings_count\"]"
+    },
+    {
+      "line_number": 109,
+      "content": ""
+    },
+    {
+      "line_number": 110,
+      "content": "    return {"
+    },
+    {
+      "line_number": 111,
+      "content": "        \"documentation_directory\": str(docs_path),"
+    },
+    {
+      "line_number": 112,
+      "content": "        \"repository_root\": str(root_path),"
+    },
+    {
+      "line_number": 113,
+      "content": "        \"overall_valid\": overall_valid,"
+    },
+    {
+      "line_number": 114,
+      "content": "        \"total_reports_validated\": len(results),"
+    },
+    {
+      "line_number": 115,
+      "content": "        \"total_broken_links\": total_broken_links,"
+    },
+    {
+      "line_number": 116,
+      "content": "        \"total_exposed_secret_warnings\": total_secret_warnings,"
+    },
+    {
+      "line_number": 117,
+      "content": "        \"reports\": results"
+    }
+  ]
+}

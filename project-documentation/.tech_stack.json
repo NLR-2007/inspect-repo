@@ -1,0 +1,30 @@
+{
+  "repository_root": "D:\\GitHub-Skills\\inspect-skill",
+  "detected_technologies_count": 1,
+  "categories": {
+    "Programming languages": [
+      {
+        "technology": "Python",
+        "category": "Programming languages",
+        "version": "Repo Standard",
+        "version_source": "Source Files",
+        "file_count": 7,
+        "percentage": 100.0,
+        "confidence": "CONFIRMED",
+        "usage": "Primary/Secondary language (100.0%)"
+      }
+    ]
+  },
+  "raw_evidence": [
+    {
+      "technology": "Python",
+      "category": "Programming languages",
+      "version": "Repo Standard",
+      "version_source": "Source Files",
+      "file_count": 7,
+      "percentage": 100.0,
+      "confidence": "CONFIRMED",
+      "usage": "Primary/Secondary language (100.0%)"
+    }
+  ]
+}

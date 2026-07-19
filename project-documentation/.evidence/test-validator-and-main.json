@@ -1,0 +1,195 @@
+{
+  "repository_root": "D:\\GitHub-Skills\\inspect-skill",
+  "file_path": "test_inspect_repository_scripts.py",
+  "total_file_lines": 187,
+  "requested_range": {
+    "start": 136,
+    "end": 180
+  },
+  "returned_range": {
+    "start": 136,
+    "end": 180
+  },
+  "lines": [
+    {
+      "line_number": 136,
+      "content": "    print(\"  PASSED: detect_secrets_safely.py\")"
+    },
+    {
+      "line_number": 137,
+      "content": ""
+    },
+    {
+      "line_number": 138,
+      "content": "def test_validate_report_evidence(tmp_dir: Path):"
+    },
+    {
+      "line_number": 139,
+      "content": "    print(\"Testing validate_report_evidence.py...\")"
+    },
+    {
+      "line_number": 140,
+      "content": "    repo = tmp_dir / \"valid_repo\""
+    },
+    {
+      "line_number": 141,
+      "content": "    repo.mkdir(parents=True, exist_ok=True)"
+    },
+    {
+      "line_number": 142,
+      "content": "    (repo / \"src\").mkdir()"
+    },
+    {
+      "line_number": 143,
+      "content": "    (repo / \"src\" / \"app.py\").write_text(\"print('ok')\", encoding=\"utf-8\")"
+    },
+    {
+      "line_number": 144,
+      "content": ""
+    },
+    {
+      "line_number": 145,
+      "content": "    docs = repo / \"project-documentation\""
+    },
+    {
+      "line_number": 146,
+      "content": "    docs.mkdir()"
+    },
+    {
+      "line_number": 147,
+      "content": ""
+    },
+    {
+      "line_number": 148,
+      "content": "    # Create report referencing src/app.py"
+    },
+    {
+      "line_number": 149,
+      "content": "    report = docs / \"PROJECT_RESEARCH_REPORT.md\""
+    },
+    {
+      "line_number": 150,
+      "content": "    report.write_text(\"# Report\\nConfirmed finding in [app.py](file:///src/app.py).\\n\", encoding=\"utf-8\")"
+    },
+    {
+      "line_number": 151,
+      "content": ""
+    },
+    {
+      "line_number": 152,
+      "content": "    out_json = tmp_dir / \"val_out.json\""
+    },
+    {
+      "line_number": 153,
+      "content": "    code, stdout, stderr = run_script(\"validate_report_evidence.py\", [\"--docs\", str(docs), \"--root\", str(repo), \"--output\", str(out_json)])"
+    },
+    {
+      "line_number": 154,
+      "content": ""
+    },
+    {
+      "line_number": 155,
+      "content": "    assert code == 0, f\"validate_report_evidence failed: {stderr}\""
+    },
+    {
+      "line_number": 156,
+      "content": "    data = json.loads(out_json.read_text(encoding=\"utf-8\"))"
+    },
+    {
+      "line_number": 157,
+      "content": "    assert data[\"overall_valid\"] is True, \"Validation reported invalid report\""
+    },
+    {
+      "line_number": 158,
+      "content": ""
+    },
+    {
+      "line_number": 159,
+      "content": "    # Test failure case (broken link)"
+    },
+    {
+      "line_number": 160,
+      "content": "    report.write_text(\"# Report\\nBroken link to [nonexistent.py](file:///src/nonexistent.py).\\n\", encoding=\"utf-8\")"
+    },
+    {
+      "line_number": 161,
+      "content": "    code_bad, stdout_bad, stderr_bad = run_script(\"validate_report_evidence.py\", [\"--docs\", str(docs), \"--root\", str(repo)])"
+    },
+    {
+      "line_number": 162,
+      "content": "    assert code_bad == 1, \"Expected exit code 1 for broken file link\""
+    },
+    {
+      "line_number": 163,
+      "content": "    print(\"  PASSED: validate_report_evidence.py\")"
+    },
+    {
+      "line_number": 164,
+      "content": ""
+    },
+    {
+      "line_number": 165,
+      "content": "def main():"
+    },
+    {
+      "line_number": 166,
+      "content": "    print(\"==================================================\")"
+    },
+    {
+      "line_number": 167,
+      "content": "    print(\"RUNNING REPOLENS SKILL DETERMINISTIC SCRIPT TESTS\")"
+    },
+    {
+      "line_number": 168,
+      "content": "    print(\"==================================================\")"
+    },
+    {
+      "line_number": 169,
+      "content": "    "
+    },
+    {
+      "line_number": 170,
+      "content": "    with tempfile.TemporaryDirectory() as tmp_dir_str:"
+    },
+    {
+      "line_number": 171,
+      "content": "        tmp_dir = Path(tmp_dir_str)"
+    },
+    {
+      "line_number": 172,
+      "content": "        try:"
+    },
+    {
+      "line_number": 173,
+      "content": "            test_inventory_repository(tmp_dir)"
+    },
+    {
+      "line_number": 174,
+      "content": "            test_detect_technology_stack(tmp_dir)"
+    },
+    {
+      "line_number": 175,
+      "content": "            test_analyze_repository_structure(tmp_dir)"
+    },
+    {
+      "line_number": 176,
+      "content": "            test_collect_code_evidence(tmp_dir)"
+    },
+    {
+      "line_number": 177,
+      "content": "            test_detect_secrets_safely(tmp_dir)"
+    },
+    {
+      "line_number": 178,
+      "content": "            test_validate_report_evidence(tmp_dir)"
+    },
+    {
+      "line_number": 179,
+      "content": "            print(\"==================================================\")"
+    },
+    {
+      "line_number": 180,
+      "content": "            print(\"ALL 6 DETERMINISTIC SCRIPT TESTS PASSED!\")"
+    }
+  ]
+}

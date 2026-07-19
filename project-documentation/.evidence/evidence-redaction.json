@@ -1,0 +1,267 @@
+{
+  "repository_root": "D:\\GitHub-Skills\\inspect-skill",
+  "file_path": "scripts/collect_code_evidence.py",
+  "total_file_lines": 106,
+  "requested_range": {
+    "start": 16,
+    "end": 78
+  },
+  "returned_range": {
+    "start": 16,
+    "end": 78
+  },
+  "lines": [
+    {
+      "line_number": 16,
+      "content": "# Common secret regex patterns for redaction"
+    },
+    {
+      "line_number": 17,
+      "content": "SECRET_PATTERNS = ["
+    },
+    {
+      "line_number": 18,
+      "content": "    (r'(?i)(api[_-]?key|secret|token|password|auth|pwd)\\s*[:=]\\s*[\"\\']([^\"\\']{8,})[\"\\']', 2),"
+    },
+    {
+      "line_number": 19,
+      "content": "    (r'(ghp_[A-Za-z0-9_]{36}|github_pat_[A-Za-z0-9_]{82})', 1),"
+    },
+    {
+      "line_number": 20,
+      "content": "    (r'(sk-[A-Za-z0-9]{32,})', 1),"
+    },
+    {
+      "line_number": 21,
+      "content": "    (r'(AKIA[0-9A-Z]{16})', 1),"
+    },
+    {
+      "line_number": 22,
+      "content": "    (r'-----BEGIN\\s+(PRIVATE\\s+KEY|RSA\\s+PRIVATE\\s+KEY)-----[\\s\\S]+?-----END', 0)"
+    },
+    {
+      "line_number": 23,
+      "content": "]"
+    },
+    {
+      "line_number": 24,
+      "content": ""
+    },
+    {
+      "line_number": 25,
+      "content": "def redact_sensitive_line(line: str) -> str:"
+    },
+    {
+      "line_number": 26,
+      "content": "    \"\"\"Redact suspected secret values from a line of code.\"\"\""
+    },
+    {
+      "line_number": 27,
+      "content": "    redacted = line"
+    },
+    {
+      "line_number": 28,
+      "content": "    for pat_info in SECRET_PATTERNS:"
+    },
+    {
+      "line_number": 29,
+      "content": "        pattern = pat_info[0]"
+    },
+    {
+      "line_number": 30,
+      "content": "        group_idx = pat_info[1]"
+    },
+    {
+      "line_number": 31,
+      "content": ""
+    },
+    {
+      "line_number": 32,
+      "content": "        def replace_fn(match):"
+    },
+    {
+      "line_number": 33,
+      "content": "            val = match.group(group_idx if group_idx > 0 else 0)"
+    },
+    {
+      "line_number": 34,
+      "content": "            if \"REDACTED\" in val or \"example\" in val.lower() or \"your_\" in val.lower():"
+    },
+    {
+      "line_number": 35,
+      "content": "                return match.group(0)"
+    },
+    {
+      "line_number": 36,
+      "content": "            return match.group(0).replace(val, \"[REDACTED_SECRET]\")"
+    },
+    {
+      "line_number": 37,
+      "content": ""
+    },
+    {
+      "line_number": 38,
+      "content": "        try:"
+    },
+    {
+      "line_number": 39,
+      "content": "            redacted = re.sub(pattern, replace_fn, redacted)"
+    },
+    {
+      "line_number": 40,
+      "content": "        except Exception:"
+    },
+    {
+      "line_number": 41,
+      "content": "            continue"
+    },
+    {
+      "line_number": 42,
+      "content": "    return redacted"
+    },
+    {
+      "line_number": 43,
+      "content": ""
+    },
+    {
+      "line_number": 44,
+      "content": "def collect_code_evidence(root_dir: str, rel_file_path: str, start_line: int, end_line: int) -> dict:"
+    },
+    {
+      "line_number": 45,
+      "content": "    \"\"\"Extract and redact specified line range from a repository file.\"\"\""
+    },
+    {
+      "line_number": 46,
+      "content": "    root = Path(root_dir).resolve()"
+    },
+    {
+      "line_number": 47,
+      "content": "    target_file = (root / rel_file_path).resolve()"
+    },
+    {
+      "line_number": 48,
+      "content": ""
+    },
+    {
+      "line_number": 49,
+      "content": "    if not target_file.exists() or not target_file.is_file():"
+    },
+    {
+      "line_number": 50,
+      "content": "        raise ValueError(f\"File not found: {rel_file_path}\")"
+    },
+    {
+      "line_number": 51,
+      "content": ""
+    },
+    {
+      "line_number": 52,
+      "content": "    # Ensure path stays inside root"
+    },
+    {
+      "line_number": 53,
+      "content": "    if not str(target_file).startswith(str(root)):"
+    },
+    {
+      "line_number": 54,
+      "content": "        raise ValueError(\"Target file path is outside repository root.\")"
+    },
+    {
+      "line_number": 55,
+      "content": ""
+    },
+    {
+      "line_number": 56,
+      "content": "    content = target_file.read_text(encoding=\"utf-8\", errors=\"ignore\")"
+    },
+    {
+      "line_number": 57,
+      "content": "    lines = content.splitlines()"
+    },
+    {
+      "line_number": 58,
+      "content": "    total_lines = len(lines)"
+    },
+    {
+      "line_number": 59,
+      "content": ""
+    },
+    {
+      "line_number": 60,
+      "content": "    start = max(1, start_line)"
+    },
+    {
+      "line_number": 61,
+      "content": "    end = min(total_lines, end_line)"
+    },
+    {
+      "line_number": 62,
+      "content": ""
+    },
+    {
+      "line_number": 63,
+      "content": "    extracted_snippets = []"
+    },
+    {
+      "line_number": 64,
+      "content": "    for idx in range(start - 1, end):"
+    },
+    {
+      "line_number": 65,
+      "content": "        raw_line = lines[idx]"
+    },
+    {
+      "line_number": 66,
+      "content": "        safe_line = redact_sensitive_line(raw_line)"
+    },
+    {
+      "line_number": 67,
+      "content": "        extracted_snippets.append({"
+    },
+    {
+      "line_number": 68,
+      "content": "            \"line_number\": idx + 1,"
+    },
+    {
+      "line_number": 69,
+      "content": "            \"content\": safe_line"
+    },
+    {
+      "line_number": 70,
+      "content": "        })"
+    },
+    {
+      "line_number": 71,
+      "content": ""
+    },
+    {
+      "line_number": 72,
+      "content": "    return {"
+    },
+    {
+      "line_number": 73,
+      "content": "        \"repository_root\": str(root),"
+    },
+    {
+      "line_number": 74,
+      "content": "        \"file_path\": rel_file_path,"
+    },
+    {
+      "line_number": 75,
+      "content": "        \"total_file_lines\": total_lines,"
+    },
+    {
+      "line_number": 76,
+      "content": "        \"requested_range\": {\"start\": start_line, \"end\": end_line},"
+    },
+    {
+      "line_number": 77,
+      "content": "        \"returned_range\": {\"start\": start, \"end\": end},"
+    },
+    {
+      "line_number": 78,
+      "content": "        \"lines\": extracted_snippets"
+    }
+  ]
+}

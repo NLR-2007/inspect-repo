@@ -1,0 +1,8 @@
+flowchart TD
+    NoDB["Database ER model: not applicable"]
+    Engine["No database engine or ORM detected"]
+    Schema["No schema or migration files inventoried"]
+    Entity["No persisted application entities found"]
+    NoDB --> Engine
+    NoDB --> Schema
+    NoDB --> Entity

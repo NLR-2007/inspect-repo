@@ -1,0 +1,223 @@
+{
+  "repository_root": "D:\\GitHub-Skills\\inspect-skill",
+  "file_path": "scripts/detect_technology_stack.py",
+  "total_file_lines": 226,
+  "requested_range": {
+    "start": 18,
+    "end": 69
+  },
+  "returned_range": {
+    "start": 18,
+    "end": 69
+  },
+  "lines": [
+    {
+      "line_number": 18,
+      "content": "TECH_SIGNATURES = {"
+    },
+    {
+      "line_number": 19,
+      "content": "    # Frontend"
+    },
+    {
+      "line_number": 20,
+      "content": "    \"React\": {\"category\": \"Frontend\", \"manifest_pattern\": r'\"react\":\\s*\"([^\"]+)\"', \"import_pattern\": r'from\\s+[\"\\']react[\"\\']|require\\([\"\\']react[\"\\']\\)'},"
+    },
+    {
+      "line_number": 21,
+      "content": "    \"Next.js\": {\"category\": \"Frontend\", \"manifest_pattern\": r'\"next\":\\s*\"([^\"]+)\"', \"import_pattern\": r'from\\s+[\"\\']next/|require\\([\"\\']next/'},"
+    },
+    {
+      "line_number": 22,
+      "content": "    \"Vue.js\": {\"category\": \"Frontend\", \"manifest_pattern\": r'\"vue\":\\s*\"([^\"]+)\"', \"import_pattern\": r'from\\s+[\"\\']vue[\"\\']'},"
+    },
+    {
+      "line_number": 23,
+      "content": "    \"Angular\": {\"category\": \"Frontend\", \"manifest_pattern\": r'\"@angular/core\":\\s*\"([^\"]+)\"', \"import_pattern\": r'from\\s+[\"\\']@angular/'},"
+    },
+    {
+      "line_number": 24,
+      "content": "    \"Tailwind CSS\": {\"category\": \"Frontend\", \"manifest_pattern\": r'\"tailwindcss\":\\s*\"([^\"]+)\"', \"file_pattern\": r'tailwind\\.config\\.(js|ts|cjs)'},"
+    },
+    {
+      "line_number": 25,
+      "content": "    \"Svelte\": {\"category\": \"Frontend\", \"manifest_pattern\": r'\"svelte\":\\s*\"([^\"]+)\"', \"file_pattern\": r'\\.svelte$'},"
+    },
+    {
+      "line_number": 26,
+      "content": "    "
+    },
+    {
+      "line_number": 27,
+      "content": "    # Backend & Frameworks"
+    },
+    {
+      "line_number": 28,
+      "content": "    \"FastAPI\": {\"category\": \"Backend\", \"manifest_pattern\": r'fastapi[=~>:]*([0-9\\.]*)', \"import_pattern\": r'from\\s+fastapi\\s+import|import\\s+fastapi'},"
+    },
+    {
+      "line_number": 29,
+      "content": "    \"Django\": {\"category\": \"Backend\", \"manifest_pattern\": r'django[=~>:]*([0-9\\.]*)', \"import_pattern\": r'import\\s+django|from\\s+django\\.'},"
+    },
+    {
+      "line_number": 30,
+      "content": "    \"Flask\": {\"category\": \"Backend\", \"manifest_pattern\": r'flask[=~>:]*([0-9\\.]*)', \"import_pattern\": r'from\\s+flask\\s+import|import\\s+flask'},"
+    },
+    {
+      "line_number": 31,
+      "content": "    \"Express.js\": {\"category\": \"Backend\", \"manifest_pattern\": r'\"express\":\\s*\"([^\"]+)\"', \"import_pattern\": r'require\\([\"\\']express[\"\\']\\)|from\\s+[\"\\']express[\"\\']'},"
+    },
+    {
+      "line_number": 32,
+      "content": "    \"Spring Boot\": {\"category\": \"Backend\", \"manifest_pattern\": r'spring-boot-starter-web', \"import_pattern\": r'org\\.springframework\\.boot'},"
+    },
+    {
+      "line_number": 33,
+      "content": "    \"Gin\": {\"category\": \"Backend\", \"manifest_pattern\": r'github\\.com/gin-gonic/gin', \"import_pattern\": r'github\\.com/gin-gonic/gin'},"
+    },
+    {
+      "line_number": 34,
+      "content": "    \"Actix Web\": {\"category\": \"Backend\", \"manifest_pattern\": r'actix-web\\s*=\\s*\"([^\"]+)\"', \"import_pattern\": r'use\\s+actix_web'},"
+    },
+    {
+      "line_number": 35,
+      "content": ""
+    },
+    {
+      "line_number": 36,
+      "content": "    # AI / ML"
+    },
+    {
+      "line_number": 37,
+      "content": "    \"PyTorch\": {\"category\": \"AI/ML\", \"manifest_pattern\": r'torch[=~>:]*([0-9\\.]*)', \"import_pattern\": r'import\\s+torch'},"
+    },
+    {
+      "line_number": 38,
+      "content": "    \"TensorFlow\": {\"category\": \"AI/ML\", \"manifest_pattern\": r'tensorflow[=~>:]*([0-9\\.]*)', \"import_pattern\": r'import\\s+tensorflow'},"
+    },
+    {
+      "line_number": 39,
+      "content": "    \"OpenAI API\": {\"category\": \"AI/ML\", \"manifest_pattern\": r'openai[=~>:]*([0-9\\.]*)', \"import_pattern\": r'import\\s+openai|from\\s+openai'},"
+    },
+    {
+      "line_number": 40,
+      "content": "    \"LangChain\": {\"category\": \"AI/ML\", \"manifest_pattern\": r'langchain[=~>:]*([0-9\\.]*)', \"import_pattern\": r'import\\s+langchain|from\\s+langchain'},"
+    },
+    {
+      "line_number": 41,
+      "content": "    \"HuggingFace Transformers\": {\"category\": \"AI/ML\", \"manifest_pattern\": r'transformers[=~>:]*([0-9\\.]*)', \"import_pattern\": r'from\\s+transformers\\s+import'},"
+    },
+    {
+      "line_number": 42,
+      "content": ""
+    },
+    {
+      "line_number": 43,
+      "content": "    # Databases & ORM"
+    },
+    {
+      "line_number": 44,
+      "content": "    \"PostgreSQL\": {\"category\": \"Databases\", \"manifest_pattern\": r'psycopg2|asyncpg|pg|\"pg\":', \"import_pattern\": r'import\\s+asyncpg|require\\([\"\\']pg[\"\\']\\)'},"
+    },
+    {
+      "line_number": 45,
+      "content": "    \"MongoDB\": {\"category\": \"Databases\", \"manifest_pattern\": r'pymongo|mongodb|\"mongoose\":', \"import_pattern\": r'import\\s+pymongo|require\\([\"\\']mongoose[\"\\']\\)'},"
+    },
+    {
+      "line_number": 46,
+      "content": "    \"SQLite\": {\"category\": \"Databases\", \"manifest_pattern\": r'sqlite3|better-sqlite3', \"import_pattern\": r'import\\s+sqlite3'},"
+    },
+    {
+      "line_number": 47,
+      "content": "    \"Prisma\": {\"category\": \"Databases\", \"manifest_pattern\": r'\"@prisma/client\":\\s*\"([^\"]+)\"', \"file_pattern\": r'schema\\.prisma'},"
+    },
+    {
+      "line_number": 48,
+      "content": "    \"SQLAlchemy\": {\"category\": \"Databases\", \"manifest_pattern\": r'sqlalchemy[=~>:]*([0-9\\.]*)', \"import_pattern\": r'from\\s+sqlalchemy\\s+import|import\\s+sqlalchemy'},"
+    },
+    {
+      "line_number": 49,
+      "content": "    \"Redis\": {\"category\": \"Caching\", \"manifest_pattern\": r'redis|\"ioredis\":', \"import_pattern\": r'import\\s+redis|require\\([\"\\']ioredis[\"\\']\\)'},"
+    },
+    {
+      "line_number": 50,
+      "content": ""
+    },
+    {
+      "line_number": 51,
+      "content": "    # Testing"
+    },
+    {
+      "line_number": 52,
+      "content": "    \"Pytest\": {\"category\": \"Testing\", \"manifest_pattern\": r'pytest[=~>:]*([0-9\\.]*)', \"import_pattern\": r'import\\s+pytest'},"
+    },
+    {
+      "line_number": 53,
+      "content": "    \"Jest\": {\"category\": \"Testing\", \"manifest_pattern\": r'\"jest\":\\s*\"([^\"]+)\"', \"file_pattern\": r'jest\\.config\\.(js|ts)'},"
+    },
+    {
+      "line_number": 54,
+      "content": "    \"Vitest\": {\"category\": \"Testing\", \"manifest_pattern\": r'\"vitest\":\\s*\"([^\"]+)\"', \"file_pattern\": r'vitest\\.config\\.(js|ts)'},"
+    },
+    {
+      "line_number": 55,
+      "content": ""
+    },
+    {
+      "line_number": 56,
+      "content": "    # Containers & Cloud"
+    },
+    {
+      "line_number": 57,
+      "content": "    \"Docker\": {\"category\": \"Containers\", \"file_pattern\": r'Dockerfile|docker-compose\\.ya?ml'},"
+    },
+    {
+      "line_number": 58,
+      "content": "    \"Kubernetes\": {\"category\": \"Orchestration\", \"file_pattern\": r'k8s|deployment\\.yaml|service\\.yaml', \"manifest_pattern\": r'apiVersion:\\s*apps/v1'},"
+    },
+    {
+      "line_number": 59,
+      "content": "    \"Terraform\": {\"category\": \"Infrastructure as code\", \"file_pattern\": r'\\.tf$'},"
+    },
+    {
+      "line_number": 60,
+      "content": "    \"GitHub Actions\": {\"category\": \"CI/CD\", \"file_pattern\": r'\\.github/workflows/.*\\.ya?ml$'}"
+    },
+    {
+      "line_number": 61,
+      "content": "}"
+    },
+    {
+      "line_number": 62,
+      "content": ""
+    },
+    {
+      "line_number": 63,
+      "content": "# Programming Language Detection"
+    },
+    {
+      "line_number": 64,
+      "content": "LANG_EXTENSIONS = {"
+    },
+    {
+      "line_number": 65,
+      "content": "    \".py\": \"Python\", \".js\": \"JavaScript\", \".ts\": \"TypeScript\", \".tsx\": \"TypeScript (React)\","
+    },
+    {
+      "line_number": 66,
+      "content": "    \".jsx\": \"JavaScript (React)\", \".java\": \"Java\", \".go\": \"Go\", \".rs\": \"Rust\", \".cpp\": \"C++\","
+    },
+    {
+      "line_number": 67,
+      "content": "    \".c\": \"C\", \".cs\": \"C#\", \".rb\": \"Ruby\", \".php\": \"PHP\", \".swift\": \"Swift\", \".kt\": \"Kotlin\","
+    },
+    {
+      "line_number": 68,
+      "content": "    \".html\": \"HTML\", \".css\": \"CSS\", \".sql\": \"SQL\", \".sh\": \"Shell\""
+    },
+    {
+      "line_number": 69,
+      "content": "}"
+    }
+  ]
+}

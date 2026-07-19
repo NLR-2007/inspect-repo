@@ -1,0 +1,311 @@
+{
+  "repository_root": "D:\\GitHub-Skills\\inspect-skill",
+  "file_path": "test_inspect_repository_scripts.py",
+  "total_file_lines": 187,
+  "requested_range": {
+    "start": 25,
+    "end": 98
+  },
+  "returned_range": {
+    "start": 25,
+    "end": 98
+  },
+  "lines": [
+    {
+      "line_number": 25,
+      "content": "def run_script(script_name: str, args: list) -> tuple:"
+    },
+    {
+      "line_number": 26,
+      "content": "    \"\"\"Execute a python script in SCRIPTS_DIR and return (exit_code, stdout, stderr).\"\"\""
+    },
+    {
+      "line_number": 27,
+      "content": "    script_path = SCRIPTS_DIR / script_name"
+    },
+    {
+      "line_number": 28,
+      "content": "    cmd = [sys.executable, str(script_path)] + args"
+    },
+    {
+      "line_number": 29,
+      "content": "    result = subprocess.run(cmd, capture_output=True, text=True, encoding=\"utf-8\")"
+    },
+    {
+      "line_number": 30,
+      "content": "    return result.returncode, result.stdout, result.stderr"
+    },
+    {
+      "line_number": 31,
+      "content": ""
+    },
+    {
+      "line_number": 32,
+      "content": "def test_inventory_repository(tmp_dir: Path):"
+    },
+    {
+      "line_number": 33,
+      "content": "    print(\"Testing inventory_repository.py...\")"
+    },
+    {
+      "line_number": 34,
+      "content": "    # Create sample repository tree"
+    },
+    {
+      "line_number": 35,
+      "content": "    repo = tmp_dir / \"sample_repo\""
+    },
+    {
+      "line_number": 36,
+      "content": "    repo.mkdir(parents=True, exist_ok=True)"
+    },
+    {
+      "line_number": 37,
+      "content": "    (repo / \"src\").mkdir()"
+    },
+    {
+      "line_number": 38,
+      "content": "    (repo / \"src\" / \"main.py\").write_text(\"print('hello')\", encoding=\"utf-8\")"
+    },
+    {
+      "line_number": 39,
+      "content": "    (repo / \"src\" / \"index.js\").write_text(\"console.log('hi')\", encoding=\"utf-8\")"
+    },
+    {
+      "line_number": 40,
+      "content": "    (repo / \"node_modules\").mkdir()"
+    },
+    {
+      "line_number": 41,
+      "content": "    (repo / \"node_modules\" / \"junk.js\").write_text(\"ignored\", encoding=\"utf-8\")"
+    },
+    {
+      "line_number": 42,
+      "content": "    (repo / \"package.json\").write_text('{\"name\": \"test\"}', encoding=\"utf-8\")"
+    },
+    {
+      "line_number": 43,
+      "content": ""
+    },
+    {
+      "line_number": 44,
+      "content": "    out_json = tmp_dir / \"inventory_out.json\""
+    },
+    {
+      "line_number": 45,
+      "content": "    code, stdout, stderr = run_script(\"inventory_repository.py\", [\"--root\", str(repo), \"--output\", str(out_json)])"
+    },
+    {
+      "line_number": 46,
+      "content": "    "
+    },
+    {
+      "line_number": 47,
+      "content": "    assert code == 0, f\"inventory_repository failed: {stderr}\""
+    },
+    {
+      "line_number": 48,
+      "content": "    assert out_json.exists(), \"Output JSON not created\""
+    },
+    {
+      "line_number": 49,
+      "content": ""
+    },
+    {
+      "line_number": 50,
+      "content": "    data = json.loads(out_json.read_text(encoding=\"utf-8\"))"
+    },
+    {
+      "line_number": 51,
+      "content": "    assert data[\"files_analyzed\"] >= 3, f\"Expected at least 3 files, got {data['files_analyzed']}\""
+    },
+    {
+      "line_number": 52,
+      "content": "    assert \"node_modules\" in data[\"ignored_directories_detected\"], \"Failed to detect node_modules in ignored list\""
+    },
+    {
+      "line_number": 53,
+      "content": "    print(\"  PASSED: inventory_repository.py\")"
+    },
+    {
+      "line_number": 54,
+      "content": ""
+    },
+    {
+      "line_number": 55,
+      "content": "def test_detect_technology_stack(tmp_dir: Path):"
+    },
+    {
+      "line_number": 56,
+      "content": "    print(\"Testing detect_technology_stack.py...\")"
+    },
+    {
+      "line_number": 57,
+      "content": "    repo = tmp_dir / \"tech_repo\""
+    },
+    {
+      "line_number": 58,
+      "content": "    repo.mkdir(parents=True, exist_ok=True)"
+    },
+    {
+      "line_number": 59,
+      "content": ""
+    },
+    {
+      "line_number": 60,
+      "content": "    # FastAPI + PyTorch + Postgres manifest"
+    },
+    {
+      "line_number": 61,
+      "content": "    (repo / \"requirements.txt\").write_text(\"fastapi==0.95.0\\ntorch==2.0.0\\npsycopg2-binary\\npytest\", encoding=\"utf-8\")"
+    },
+    {
+      "line_number": 62,
+      "content": "    (repo / \"main.py\").write_text(\"from fastapi import FastAPI\\nimport torch\\napp = FastAPI()\", encoding=\"utf-8\")"
+    },
+    {
+      "line_number": 63,
+      "content": ""
+    },
+    {
+      "line_number": 64,
+      "content": "    out_json = tmp_dir / \"tech_out.json\""
+    },
+    {
+      "line_number": 65,
+      "content": "    code, stdout, stderr = run_script(\"detect_technology_stack.py\", [\"--root\", str(repo), \"--output\", str(out_json)])"
+    },
+    {
+      "line_number": 66,
+      "content": ""
+    },
+    {
+      "line_number": 67,
+      "content": "    assert code == 0, f\"detect_technology_stack failed: {stderr}\""
+    },
+    {
+      "line_number": 68,
+      "content": "    data = json.loads(out_json.read_text(encoding=\"utf-8\"))"
+    },
+    {
+      "line_number": 69,
+      "content": ""
+    },
+    {
+      "line_number": 70,
+      "content": "    raw_techs = [item[\"technology\"] for item in data[\"raw_evidence\"]]"
+    },
+    {
+      "line_number": 71,
+      "content": "    assert \"FastAPI\" in raw_techs, \"Failed to detect FastAPI\""
+    },
+    {
+      "line_number": 72,
+      "content": "    assert \"PyTorch\" in raw_techs, \"Failed to detect PyTorch\""
+    },
+    {
+      "line_number": 73,
+      "content": "    assert \"PostgreSQL\" in raw_techs, \"Failed to detect PostgreSQL\""
+    },
+    {
+      "line_number": 74,
+      "content": "    assert \"Python\" in raw_techs, \"Failed to detect Python language\""
+    },
+    {
+      "line_number": 75,
+      "content": "    print(\"  PASSED: detect_technology_stack.py\")"
+    },
+    {
+      "line_number": 76,
+      "content": ""
+    },
+    {
+      "line_number": 77,
+      "content": "def test_analyze_repository_structure(tmp_dir: Path):"
+    },
+    {
+      "line_number": 78,
+      "content": "    print(\"Testing analyze_repository_structure.py...\")"
+    },
+    {
+      "line_number": 79,
+      "content": "    repo = tmp_dir / \"struct_repo\""
+    },
+    {
+      "line_number": 80,
+      "content": "    repo.mkdir(parents=True, exist_ok=True)"
+    },
+    {
+      "line_number": 81,
+      "content": ""
+    },
+    {
+      "line_number": 82,
+      "content": "    (repo / \"controllers\").mkdir()"
+    },
+    {
+      "line_number": 83,
+      "content": "    (repo / \"controllers\" / \"user_controller.py\").write_text('@app.get(\"/api/users\")\\ndef get_users(): pass', encoding=\"utf-8\")"
+    },
+    {
+      "line_number": 84,
+      "content": "    (repo / \"main.py\").write_text(\"from controllers import user_controller\", encoding=\"utf-8\")"
+    },
+    {
+      "line_number": 85,
+      "content": ""
+    },
+    {
+      "line_number": 86,
+      "content": "    out_json = tmp_dir / \"struct_out.json\""
+    },
+    {
+      "line_number": 87,
+      "content": "    code, stdout, stderr = run_script(\"analyze_repository_structure.py\", [\"--root\", str(repo), \"--output\", str(out_json)])"
+    },
+    {
+      "line_number": 88,
+      "content": ""
+    },
+    {
+      "line_number": 89,
+      "content": "    assert code == 0, f\"analyze_repository_structure failed: {stderr}\""
+    },
+    {
+      "line_number": 90,
+      "content": "    data = json.loads(out_json.read_text(encoding=\"utf-8\"))"
+    },
+    {
+      "line_number": 91,
+      "content": ""
+    },
+    {
+      "line_number": 92,
+      "content": "    entry_files = [ep[\"filename\"] for ep in data[\"entry_points\"]]"
+    },
+    {
+      "line_number": 93,
+      "content": "    assert \"main.py\" in entry_files, \"Failed to locate main.py entry point\""
+    },
+    {
+      "line_number": 94,
+      "content": "    assert data[\"discovered_routes_count\"] >= 1, \"Failed to discover API route\""
+    },
+    {
+      "line_number": 95,
+      "content": "    assert data[\"routes\"][0][\"endpoint\"] == \"/api/users\", \"Incorrect endpoint route\""
+    },
+    {
+      "line_number": 96,
+      "content": "    print(\"  PASSED: analyze_repository_structure.py\")"
+    },
+    {
+      "line_number": 97,
+      "content": ""
+    },
+    {
+      "line_number": 98,
+      "content": "def test_collect_code_evidence(tmp_dir: Path):"
+    }
+  ]
+}

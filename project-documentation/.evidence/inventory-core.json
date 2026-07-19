@@ -1,0 +1,243 @@
+{
+  "repository_root": "D:\\GitHub-Skills\\inspect-skill",
+  "file_path": "scripts/inventory_repository.py",
+  "total_file_lines": 239,
+  "requested_range": {
+    "start": 15,
+    "end": 71
+  },
+  "returned_range": {
+    "start": 15,
+    "end": 71
+  },
+  "lines": [
+    {
+      "line_number": 15,
+      "content": "# Directories to skip contents of (content-ignored directories)"
+    },
+    {
+      "line_number": 16,
+      "content": "IGNORED_DIR_NAMES = {"
+    },
+    {
+      "line_number": 17,
+      "content": "    \"node_modules\", \".git\", \"dist\", \"build\", \"coverage\", \"target\", \"out\","
+    },
+    {
+      "line_number": 18,
+      "content": "    \".next\", \".nuxt\", \"vendor\", \"__pycache__\", \".pytest_cache\", \".mypy_cache\","
+    },
+    {
+      "line_number": 19,
+      "content": "    \".tox\", \"venv\", \".venv\", \"env\", \".idea\", \".vscode\", \"cache\", \".cache\","
+    },
+    {
+      "line_number": 20,
+      "content": "    \"bin\", \"obj\", \".gradle\""
+    },
+    {
+      "line_number": 21,
+      "content": "}"
+    },
+    {
+      "line_number": 22,
+      "content": ""
+    },
+    {
+      "line_number": 23,
+      "content": "# Extension & pattern classifications"
+    },
+    {
+      "line_number": 24,
+      "content": "CATEGORY_PATTERNS = {"
+    },
+    {
+      "line_number": 25,
+      "content": "    \"dependency_manifest\": {"
+    },
+    {
+      "line_number": 26,
+      "content": "        \"package.json\", \"requirements.txt\", \"pyproject.toml\", \"Cargo.toml\", \"go.mod\","
+    },
+    {
+      "line_number": 27,
+      "content": "        \"Gemfile\", \"composer.json\", \"pom.xml\", \"build.gradle\", \"settings.gradle\","
+    },
+    {
+      "line_number": 28,
+      "content": "        \"pubspec.yaml\", \"Podfile\", \"Package.swift\", \"Pipfile\", \"Mix.exs\""
+    },
+    {
+      "line_number": 29,
+      "content": "    },"
+    },
+    {
+      "line_number": 30,
+      "content": "    \"lock_file\": {"
+    },
+    {
+      "line_number": 31,
+      "content": "        \"package-lock.json\", \"yarn.lock\", \"pnpm-lock.yaml\", \"poetry.lock\", \"Pipfile.lock\","
+    },
+    {
+      "line_number": 32,
+      "content": "        \"Cargo.lock\", \"go.sum\", \"Gemfile.lock\", \"composer.lock\", \"pubspec.lock\""
+    },
+    {
+      "line_number": 33,
+      "content": "    },"
+    },
+    {
+      "line_number": 34,
+      "content": "    \"container\": {"
+    },
+    {
+      "line_number": 35,
+      "content": "        \"Dockerfile\", \"docker-compose.yml\", \"docker-compose.yaml\", \"Containerfile\""
+    },
+    {
+      "line_number": 36,
+      "content": "    },"
+    },
+    {
+      "line_number": 37,
+      "content": "    \"cicd\": {"
+    },
+    {
+      "line_number": 38,
+      "content": "        \".gitlab-ci.yml\", \"Jenkinsfile\", \".travis.yml\", \"azure-pipelines.yml\""
+    },
+    {
+      "line_number": 39,
+      "content": "    }"
+    },
+    {
+      "line_number": 40,
+      "content": "}"
+    },
+    {
+      "line_number": 41,
+      "content": ""
+    },
+    {
+      "line_number": 42,
+      "content": "EXTENSION_MAP = {"
+    },
+    {
+      "line_number": 43,
+      "content": "    # Source Code"
+    },
+    {
+      "line_number": 44,
+      "content": "    \".py\": \"source_code\", \".js\": \"source_code\", \".ts\": \"source_code\", \".jsx\": \"source_code\","
+    },
+    {
+      "line_number": 45,
+      "content": "    \".tsx\": \"source_code\", \".java\": \"source_code\", \".c\": \"source_code\", \".cpp\": \"source_code\","
+    },
+    {
+      "line_number": 46,
+      "content": "    \".h\": \"source_code\", \".hpp\": \"source_code\", \".cs\": \"source_code\", \".go\": \"source_code\","
+    },
+    {
+      "line_number": 47,
+      "content": "    \".rs\": \"source_code\", \".rb\": \"source_code\", \".php\": \"source_code\", \".swift\": \"source_code\","
+    },
+    {
+      "line_number": 48,
+      "content": "    \".kt\": \"source_code\", \".scala\": \"source_code\", \".ex\": \"source_code\", \".exs\": \"source_code\","
+    },
+    {
+      "line_number": 49,
+      "content": "    \".sh\": \"script\", \".ps1\": \"script\", \".bat\": \"script\", \".cmd\": \"script\","
+    },
+    {
+      "line_number": 50,
+      "content": "    # Configuration"
+    },
+    {
+      "line_number": 51,
+      "content": "    \".json\": \"configuration\", \".yaml\": \"configuration\", \".yml\": \"configuration\","
+    },
+    {
+      "line_number": 52,
+      "content": "    \".toml\": \"configuration\", \".env.example\": \"configuration\", \".ini\": \"configuration\","
+    },
+    {
+      "line_number": 53,
+      "content": "    \".xml\": \"configuration\", \".properties\": \"configuration\","
+    },
+    {
+      "line_number": 54,
+      "content": "    # Database & Migrations"
+    },
+    {
+      "line_number": 55,
+      "content": "    \".sql\": \"migration\", \".db\": \"database\", \".sqlite\": \"database\", \".sqlite3\": \"database\","
+    },
+    {
+      "line_number": 56,
+      "content": "    # Documentation"
+    },
+    {
+      "line_number": 57,
+      "content": "    \".md\": \"documentation\", \".rst\": \"documentation\", \".txt\": \"documentation\","
+    },
+    {
+      "line_number": 58,
+      "content": "    # Infrastructure"
+    },
+    {
+      "line_number": 59,
+      "content": "    \".tf\": \"infrastructure\", \".tfvars\": \"infrastructure\", \".bicep\": \"infrastructure\","
+    },
+    {
+      "line_number": 60,
+      "content": "    # Tests"
+    },
+    {
+      "line_number": 61,
+      "content": "    \".spec.js\": \"test\", \".test.js\": \"test\", \".spec.ts\": \"test\", \".test.ts\": \"test\","
+    },
+    {
+      "line_number": 62,
+      "content": "    # Images & Media"
+    },
+    {
+      "line_number": 63,
+      "content": "    \".png\": \"image\", \".jpg\": \"image\", \".jpeg\": \"image\", \".gif\": \"image\", \".svg\": \"image\","
+    },
+    {
+      "line_number": 64,
+      "content": "    \".webp\": \"image\", \".ico\": \"image\","
+    },
+    {
+      "line_number": 65,
+      "content": "    # Models & Data"
+    },
+    {
+      "line_number": 66,
+      "content": "    \".onnx\": \"model\", \".pth\": \"model\", \".pt\": \"model\", \".bin\": \"model\", \".safetensors\": \"model\","
+    },
+    {
+      "line_number": 67,
+      "content": "    \".csv\": \"data_file\", \".tsv\": \"data_file\", \".parquet\": \"data_file\","
+    },
+    {
+      "line_number": 68,
+      "content": "    # Archives & Binaries"
+    },
+    {
+      "line_number": 69,
+      "content": "    \".zip\": \"archive\", \".tar\": \"archive\", \".gz\": \"archive\", \".7z\": \"archive\","
+    },
+    {
+      "line_number": 70,
+      "content": "    \".exe\": \"binary\", \".dll\": \"binary\", \".so\": \"binary\", \".dylib\": \"binary\", \".class\": \"binary\","
+    },
+    {
+      "line_number": 71,
+      "content": "    \".pyc\": \"binary\""
+    }
+  ]
+}

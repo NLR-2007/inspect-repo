@@ -1,0 +1,547 @@
+{
+  "repository_root": "D:\\GitHub-Skills\\inspect-skill",
+  "file_path": "scripts/detect_technology_stack.py",
+  "total_file_lines": 226,
+  "requested_range": {
+    "start": 71,
+    "end": 203
+  },
+  "returned_range": {
+    "start": 71,
+    "end": 203
+  },
+  "lines": [
+    {
+      "line_number": 71,
+      "content": "def scan_manifests(root: Path) -> list:"
+    },
+    {
+      "line_number": 72,
+      "content": "    \"\"\"Scan manifests for direct technology dependencies.\"\"\""
+    },
+    {
+      "line_number": 73,
+      "content": "    findings = []"
+    },
+    {
+      "line_number": 74,
+      "content": "    manifest_files = ["
+    },
+    {
+      "line_number": 75,
+      "content": "        \"package.json\", \"requirements.txt\", \"pyproject.toml\", \"Cargo.toml\","
+    },
+    {
+      "line_number": 76,
+      "content": "        \"go.mod\", \"pom.xml\", \"build.gradle\", \"Gemfile\", \"composer.json\", \"docker-compose.yml\""
+    },
+    {
+      "line_number": 77,
+      "content": "    ]"
+    },
+    {
+      "line_number": 78,
+      "content": ""
+    },
+    {
+      "line_number": 79,
+      "content": "    for mfile in manifest_files:"
+    },
+    {
+      "line_number": 80,
+      "content": "        for file_path in root.glob(f\"**/{mfile}\"):"
+    },
+    {
+      "line_number": 81,
+      "content": "            if any(part in file_path.parts for part in [\"node_modules\", \".git\", \"venv\", \".venv\", \"dist\", \"build\"]):"
+    },
+    {
+      "line_number": 82,
+      "content": "                continue"
+    },
+    {
+      "line_number": 83,
+      "content": ""
+    },
+    {
+      "line_number": 84,
+      "content": "            rel_path = str(file_path.relative_to(root)).replace(\"\\\\\", \"/\")"
+    },
+    {
+      "line_number": 85,
+      "content": "            try:"
+    },
+    {
+      "line_number": 86,
+      "content": "                content = file_path.read_text(encoding=\"utf-8\", errors=\"ignore\")"
+    },
+    {
+      "line_number": 87,
+      "content": "                lines = content.splitlines()"
+    },
+    {
+      "line_number": 88,
+      "content": ""
+    },
+    {
+      "line_number": 89,
+      "content": "                for tech, meta in TECH_SIGNATURES.items():"
+    },
+    {
+      "line_number": 90,
+      "content": "                    pat = meta.get(\"manifest_pattern\")"
+    },
+    {
+      "line_number": 91,
+      "content": "                    if not pat:"
+    },
+    {
+      "line_number": 92,
+      "content": "                        continue"
+    },
+    {
+      "line_number": 93,
+      "content": "                    "
+    },
+    {
+      "line_number": 94,
+      "content": "                    for idx, line in enumerate(lines, 1):"
+    },
+    {
+      "line_number": 95,
+      "content": "                        match = re.search(pat, line, re.IGNORECASE)"
+    },
+    {
+      "line_number": 96,
+      "content": "                        if match:"
+    },
+    {
+      "line_number": 97,
+      "content": "                            version = match.group(1) if match.groups() and match.group(1) else \"Detected\""
+    },
+    {
+      "line_number": 98,
+      "content": "                            findings.append({"
+    },
+    {
+      "line_number": 99,
+      "content": "                                \"technology\": tech,"
+    },
+    {
+      "line_number": 100,
+      "content": "                                \"category\": meta[\"category\"],"
+    },
+    {
+      "line_number": 101,
+      "content": "                                \"version\": version.strip(\"^~>=\"),"
+    },
+    {
+      "line_number": 102,
+      "content": "                                \"version_source\": mfile,"
+    },
+    {
+      "line_number": 103,
+      "content": "                                \"evidence_file\": rel_path,"
+    },
+    {
+      "line_number": 104,
+      "content": "                                \"line_number\": idx,"
+    },
+    {
+      "line_number": 105,
+      "content": "                                \"line_content\": line.strip()[:150],"
+    },
+    {
+      "line_number": 106,
+      "content": "                                \"usage\": \"Direct Dependency\","
+    },
+    {
+      "line_number": 107,
+      "content": "                                \"confidence\": \"CONFIRMED\","
+    },
+    {
+      "line_number": 108,
+      "content": "                                \"is_direct\": True"
+    },
+    {
+      "line_number": 109,
+      "content": "                            })"
+    },
+    {
+      "line_number": 110,
+      "content": "            except Exception:"
+    },
+    {
+      "line_number": 111,
+      "content": "                continue"
+    },
+    {
+      "line_number": 112,
+      "content": ""
+    },
+    {
+      "line_number": 113,
+      "content": "    return findings"
+    },
+    {
+      "line_number": 114,
+      "content": ""
+    },
+    {
+      "line_number": 115,
+      "content": "def scan_file_patterns(root: Path) -> list:"
+    },
+    {
+      "line_number": 116,
+      "content": "    \"\"\"Scan file patterns for structural technology signatures.\"\"\""
+    },
+    {
+      "line_number": 117,
+      "content": "    findings = []"
+    },
+    {
+      "line_number": 118,
+      "content": "    for tech, meta in TECH_SIGNATURES.items():"
+    },
+    {
+      "line_number": 119,
+      "content": "        pat = meta.get(\"file_pattern\")"
+    },
+    {
+      "line_number": 120,
+      "content": "        if not pat:"
+    },
+    {
+      "line_number": 121,
+      "content": "            continue"
+    },
+    {
+      "line_number": 122,
+      "content": "        "
+    },
+    {
+      "line_number": 123,
+      "content": "        for file_path in root.glob(\"**/*\"):"
+    },
+    {
+      "line_number": 124,
+      "content": "            if any(part in file_path.parts for part in [\"node_modules\", \".git\", \"venv\", \".venv\"]):"
+    },
+    {
+      "line_number": 125,
+      "content": "                continue"
+    },
+    {
+      "line_number": 126,
+      "content": "            if file_path.is_file():"
+    },
+    {
+      "line_number": 127,
+      "content": "                rel_path = str(file_path.relative_to(root)).replace(\"\\\\\", \"/\")"
+    },
+    {
+      "line_number": 128,
+      "content": "                if re.search(pat, rel_path, re.IGNORECASE):"
+    },
+    {
+      "line_number": 129,
+      "content": "                    findings.append({"
+    },
+    {
+      "line_number": 130,
+      "content": "                        \"technology\": tech,"
+    },
+    {
+      "line_number": 131,
+      "content": "                        \"category\": meta[\"category\"],"
+    },
+    {
+      "line_number": 132,
+      "content": "                        \"version\": \"Unknown\","
+    },
+    {
+      "line_number": 133,
+      "content": "                        \"version_source\": \"File Structure\","
+    },
+    {
+      "line_number": 134,
+      "content": "                        \"evidence_file\": rel_path,"
+    },
+    {
+      "line_number": 135,
+      "content": "                        \"line_number\": 1,"
+    },
+    {
+      "line_number": 136,
+      "content": "                        \"line_content\": f\"File pattern match: {file_path.name}\","
+    },
+    {
+      "line_number": 137,
+      "content": "                        \"usage\": \"Infrastructure / Configuration\","
+    },
+    {
+      "line_number": 138,
+      "content": "                        \"confidence\": \"CONFIRMED\","
+    },
+    {
+      "line_number": 139,
+      "content": "                        \"is_direct\": True"
+    },
+    {
+      "line_number": 140,
+      "content": "                    })"
+    },
+    {
+      "line_number": 141,
+      "content": "                    break"
+    },
+    {
+      "line_number": 142,
+      "content": "    return findings"
+    },
+    {
+      "line_number": 143,
+      "content": ""
+    },
+    {
+      "line_number": 144,
+      "content": "def scan_languages(root: Path) -> dict:"
+    },
+    {
+      "line_number": 145,
+      "content": "    \"\"\"Determine programming language usage by count and volume.\"\"\""
+    },
+    {
+      "line_number": 146,
+      "content": "    counts = {}"
+    },
+    {
+      "line_number": 147,
+      "content": "    total_files = 0"
+    },
+    {
+      "line_number": 148,
+      "content": "    for file_path in root.glob(\"**/*\"):"
+    },
+    {
+      "line_number": 149,
+      "content": "        if file_path.is_file() and not any(part in file_path.parts for part in [\"node_modules\", \".git\", \"venv\", \"dist\", \"build\"]):"
+    },
+    {
+      "line_number": 150,
+      "content": "            ext = file_path.suffix.lower()"
+    },
+    {
+      "line_number": 151,
+      "content": "            if ext in LANG_EXTENSIONS:"
+    },
+    {
+      "line_number": 152,
+      "content": "                lang = LANG_EXTENSIONS[ext]"
+    },
+    {
+      "line_number": 153,
+      "content": "                counts[lang] = counts.get(lang, 0) + 1"
+    },
+    {
+      "line_number": 154,
+      "content": "                total_files += 1"
+    },
+    {
+      "line_number": 155,
+      "content": ""
+    },
+    {
+      "line_number": 156,
+      "content": "    language_findings = []"
+    },
+    {
+      "line_number": 157,
+      "content": "    for lang, count in counts.items():"
+    },
+    {
+      "line_number": 158,
+      "content": "        percent = round((count / max(total_files, 1)) * 100, 1)"
+    },
+    {
+      "line_number": 159,
+      "content": "        language_findings.append({"
+    },
+    {
+      "line_number": 160,
+      "content": "            \"technology\": lang,"
+    },
+    {
+      "line_number": 161,
+      "content": "            \"category\": \"Programming languages\","
+    },
+    {
+      "line_number": 162,
+      "content": "            \"version\": \"Repo Standard\","
+    },
+    {
+      "line_number": 163,
+      "content": "            \"version_source\": \"Source Files\","
+    },
+    {
+      "line_number": 164,
+      "content": "            \"file_count\": count,"
+    },
+    {
+      "line_number": 165,
+      "content": "            \"percentage\": percent,"
+    },
+    {
+      "line_number": 166,
+      "content": "            \"confidence\": \"CONFIRMED\","
+    },
+    {
+      "line_number": 167,
+      "content": "            \"usage\": f\"Primary/Secondary language ({percent}%)\""
+    },
+    {
+      "line_number": 168,
+      "content": "        })"
+    },
+    {
+      "line_number": 169,
+      "content": "    return language_findings"
+    },
+    {
+      "line_number": 170,
+      "content": ""
+    },
+    {
+      "line_number": 171,
+      "content": "def detect_technology_stack(root_dir: str) -> dict:"
+    },
+    {
+      "line_number": 172,
+      "content": "    \"\"\"Main technological stack detection function.\"\"\""
+    },
+    {
+      "line_number": 173,
+      "content": "    root = Path(root_dir).resolve()"
+    },
+    {
+      "line_number": 174,
+      "content": "    if not root.exists():"
+    },
+    {
+      "line_number": 175,
+      "content": "        raise ValueError(f\"Directory not found: {root_dir}\")"
+    },
+    {
+      "line_number": 176,
+      "content": ""
+    },
+    {
+      "line_number": 177,
+      "content": "    manifest_findings = scan_manifests(root)"
+    },
+    {
+      "line_number": 178,
+      "content": "    pattern_findings = scan_file_patterns(root)"
+    },
+    {
+      "line_number": 179,
+      "content": "    languages = scan_languages(root)"
+    },
+    {
+      "line_number": 180,
+      "content": ""
+    },
+    {
+      "line_number": 181,
+      "content": "    # Deduplicate findings by technology name"
+    },
+    {
+      "line_number": 182,
+      "content": "    combined = {}"
+    },
+    {
+      "line_number": 183,
+      "content": "    for item in manifest_findings + pattern_findings:"
+    },
+    {
+      "line_number": 184,
+      "content": "        tech = item[\"technology\"]"
+    },
+    {
+      "line_number": 185,
+      "content": "        if tech not in combined or item[\"confidence\"] == \"CONFIRMED\":"
+    },
+    {
+      "line_number": 186,
+      "content": "            combined[tech] = item"
+    },
+    {
+      "line_number": 187,
+      "content": ""
+    },
+    {
+      "line_number": 188,
+      "content": "    all_technologies = list(combined.values()) + languages"
+    },
+    {
+      "line_number": 189,
+      "content": ""
+    },
+    {
+      "line_number": 190,
+      "content": "    # Group by category"
+    },
+    {
+      "line_number": 191,
+      "content": "    by_category = {}"
+    },
+    {
+      "line_number": 192,
+      "content": "    for tech_item in all_technologies:"
+    },
+    {
+      "line_number": 193,
+      "content": "        cat = tech_item[\"category\"]"
+    },
+    {
+      "line_number": 194,
+      "content": "        if cat not in by_category:"
+    },
+    {
+      "line_number": 195,
+      "content": "            by_category[cat] = []"
+    },
+    {
+      "line_number": 196,
+      "content": "        by_category[cat].append(tech_item)"
+    },
+    {
+      "line_number": 197,
+      "content": ""
+    },
+    {
+      "line_number": 198,
+      "content": "    return {"
+    },
+    {
+      "line_number": 199,
+      "content": "        \"repository_root\": str(root),"
+    },
+    {
+      "line_number": 200,
+      "content": "        \"detected_technologies_count\": len(all_technologies),"
+    },
+    {
+      "line_number": 201,
+      "content": "        \"categories\": by_category,"
+    },
+    {
+      "line_number": 202,
+      "content": "        \"raw_evidence\": all_technologies"
+    },
+    {
+      "line_number": 203,
+      "content": "    }"
+    }
+  ]
+}

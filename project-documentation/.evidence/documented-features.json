@@ -1,0 +1,51 @@
+{
+  "repository_root": "D:\\GitHub-Skills\\inspect-skill",
+  "file_path": "README.md",
+  "total_file_lines": 117,
+  "requested_range": {
+    "start": 28,
+    "end": 36
+  },
+  "returned_range": {
+    "start": 28,
+    "end": 36
+  },
+  "lines": [
+    {
+      "line_number": 28,
+      "content": "## 🌟 Key Features"
+    },
+    {
+      "line_number": 29,
+      "content": ""
+    },
+    {
+      "line_number": 30,
+      "content": "- 🔎 **Deterministic File Inventory**: Classifies files across 22 categories, intelligently ignoring generated folders (`node_modules`, `.git`, `dist`, `target`, `venv`, `__pycache__`) while tracking total file counts and size metrics."
+    },
+    {
+      "line_number": 31,
+      "content": "- ⚡ **28-Category Technology Stack Detection**: Scans manifests (`package.json`, `requirements.txt`, `Cargo.toml`, `go.mod`, `pom.xml`), lock files, Dockerfiles, and source imports with line-level evidence and confidence levels (`CONFIRMED`, `HIGH`, `MEDIUM`, `LOW`, `NOT FOUND`)."
+    },
+    {
+      "line_number": 32,
+      "content": "- 🔐 **Safe Secret Audit & Redaction**: Scans for API keys, private keys, database connection strings, and tokens without ever exposing raw secrets in terminal output, logs, or documentation."
+    },
+    {
+      "line_number": 33,
+      "content": "- 📊 **Editable Mermaid Architecture Diagrams**: Automatically generates evidence-backed Mermaid diagrams for System Architecture, Request/Auth Flow Sequences, and Database ER Models."
+    },
+    {
+      "line_number": 34,
+      "content": "- 🎯 **10-Dimension Senior Quality Scoring**: Scores projects from 0 to 100 across 10 evaluation dimensions with technical rationale."
+    },
+    {
+      "line_number": 35,
+      "content": "- 📄 **Complete 35-Section Documentation Suite**: Outputs `PROJECT_RESEARCH_REPORT.md` and 16 modular sub-documents into `project-documentation/`."
+    },
+    {
+      "line_number": 36,
+      "content": "- 🔗 **Anti-Hallucination & Link Validation**: Built-in evidence ledger cross-validates every claim against existing repository files before delivery."
+    }
+  ]
+}

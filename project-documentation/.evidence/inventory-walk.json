@@ -1,0 +1,415 @@
+{
+  "repository_root": "D:\\GitHub-Skills\\inspect-skill",
+  "file_path": "scripts/inventory_repository.py",
+  "total_file_lines": 239,
+  "requested_range": {
+    "start": 114,
+    "end": 213
+  },
+  "returned_range": {
+    "start": 114,
+    "end": 213
+  },
+  "lines": [
+    {
+      "line_number": 114,
+      "content": "def inventory_repository(root_dir: str, max_file_size_kb: int = 1024) -> dict:"
+    },
+    {
+      "line_number": 115,
+      "content": "    \"\"\"Perform deterministic safe repository inventory.\"\"\""
+    },
+    {
+      "line_number": 116,
+      "content": "    root = Path(root_dir).resolve()"
+    },
+    {
+      "line_number": 117,
+      "content": "    if not root.exists() or not root.is_dir():"
+    },
+    {
+      "line_number": 118,
+      "content": "        raise ValueError(f\"Invalid directory path: {root_dir}\")"
+    },
+    {
+      "line_number": 119,
+      "content": ""
+    },
+    {
+      "line_number": 120,
+      "content": "    total_files_discovered = 0"
+    },
+    {
+      "line_number": 121,
+      "content": "    files_analyzed = 0"
+    },
+    {
+      "line_number": 122,
+      "content": "    binary_files_excluded = 0"
+    },
+    {
+      "line_number": 123,
+      "content": "    large_files_sampled = 0"
+    },
+    {
+      "line_number": 124,
+      "content": "    ignored_directories_found = set()"
+    },
+    {
+      "line_number": 125,
+      "content": ""
+    },
+    {
+      "line_number": 126,
+      "content": "    categories = {}"
+    },
+    {
+      "line_number": 127,
+      "content": "    file_list = []"
+    },
+    {
+      "line_number": 128,
+      "content": "    seen_paths = set()"
+    },
+    {
+      "line_number": 129,
+      "content": ""
+    },
+    {
+      "line_number": 130,
+      "content": "    for current_root, dirs, files in os.walk(root, followlinks=False):"
+    },
+    {
+      "line_number": 131,
+      "content": "        current_path = Path(current_root)"
+    },
+    {
+      "line_number": 132,
+      "content": "        "
+    },
+    {
+      "line_number": 133,
+      "content": "        # Check if current directory or parent is in ignored list"
+    },
+    {
+      "line_number": 134,
+      "content": "        rel_parts = current_path.relative_to(root).parts"
+    },
+    {
+      "line_number": 135,
+      "content": "        ignored_ancestors = [p for p in rel_parts if p in IGNORED_DIR_NAMES]"
+    },
+    {
+      "line_number": 136,
+      "content": "        "
+    },
+    {
+      "line_number": 137,
+      "content": "        if ignored_ancestors:"
+    },
+    {
+      "line_number": 138,
+      "content": "            ignored_directories_found.add(ignored_ancestors[0])"
+    },
+    {
+      "line_number": 139,
+      "content": "            # Don't recurse into ignored directories"
+    },
+    {
+      "line_number": 140,
+      "content": "            dirs[:] = []"
+    },
+    {
+      "line_number": 141,
+      "content": "            continue"
+    },
+    {
+      "line_number": 142,
+      "content": ""
+    },
+    {
+      "line_number": 143,
+      "content": "        # Prune ignored subdirectories from dirs list"
+    },
+    {
+      "line_number": 144,
+      "content": "        for d in list(dirs):"
+    },
+    {
+      "line_number": 145,
+      "content": "            if d in IGNORED_DIR_NAMES:"
+    },
+    {
+      "line_number": 146,
+      "content": "                ignored_directories_found.add(d)"
+    },
+    {
+      "line_number": 147,
+      "content": "                dirs.remove(d)"
+    },
+    {
+      "line_number": 148,
+      "content": ""
+    },
+    {
+      "line_number": 149,
+      "content": "        for filename in files:"
+    },
+    {
+      "line_number": 150,
+      "content": "            total_files_discovered += 1"
+    },
+    {
+      "line_number": 151,
+      "content": "            file_path = current_path / filename"
+    },
+    {
+      "line_number": 152,
+      "content": ""
+    },
+    {
+      "line_number": 153,
+      "content": "            # Prevent loop/duplicate"
+    },
+    {
+      "line_number": 154,
+      "content": "            try:"
+    },
+    {
+      "line_number": 155,
+      "content": "                real_path = file_path.resolve()"
+    },
+    {
+      "line_number": 156,
+      "content": "            except Exception:"
+    },
+    {
+      "line_number": 157,
+      "content": "                real_path = file_path"
+    },
+    {
+      "line_number": 158,
+      "content": ""
+    },
+    {
+      "line_number": 159,
+      "content": "            if real_path in seen_paths:"
+    },
+    {
+      "line_number": 160,
+      "content": "                continue"
+    },
+    {
+      "line_number": 161,
+      "content": "            seen_paths.add(real_path)"
+    },
+    {
+      "line_number": 162,
+      "content": ""
+    },
+    {
+      "line_number": 163,
+      "content": "            rel_path_str = str(file_path.relative_to(root)).replace(\"\\\\\", \"/\")"
+    },
+    {
+      "line_number": 164,
+      "content": ""
+    },
+    {
+      "line_number": 165,
+      "content": "            try:"
+    },
+    {
+      "line_number": 166,
+      "content": "                stat = file_path.stat()"
+    },
+    {
+      "line_number": 167,
+      "content": "                size_bytes = stat.st_size"
+    },
+    {
+      "line_number": 168,
+      "content": "                size_kb = round(size_bytes / 1024.0, 2)"
+    },
+    {
+      "line_number": 169,
+      "content": "            except Exception as e:"
+    },
+    {
+      "line_number": 170,
+      "content": "                file_list.append({"
+    },
+    {
+      "line_number": 171,
+      "content": "                    \"path\": rel_path_str,"
+    },
+    {
+      "line_number": 172,
+      "content": "                    \"category\": \"unreadable\","
+    },
+    {
+      "line_number": 173,
+      "content": "                    \"size_bytes\": 0,"
+    },
+    {
+      "line_number": 174,
+      "content": "                    \"error\": str(e)"
+    },
+    {
+      "line_number": 175,
+      "content": "                })"
+    },
+    {
+      "line_number": 176,
+      "content": "                continue"
+    },
+    {
+      "line_number": 177,
+      "content": ""
+    },
+    {
+      "line_number": 178,
+      "content": "            category = classify_file(file_path, filename)"
+    },
+    {
+      "line_number": 179,
+      "content": "            is_bin = is_binary_file(file_path) if size_bytes > 0 else False"
+    },
+    {
+      "line_number": 180,
+      "content": "            is_large = size_kb > max_file_size_kb"
+    },
+    {
+      "line_number": 181,
+      "content": ""
+    },
+    {
+      "line_number": 182,
+      "content": "            if is_bin and category not in (\"image\", \"model\", \"archive\", \"binary\"):"
+    },
+    {
+      "line_number": 183,
+      "content": "                category = \"binary\""
+    },
+    {
+      "line_number": 184,
+      "content": ""
+    },
+    {
+      "line_number": 185,
+      "content": "            if is_bin:"
+    },
+    {
+      "line_number": 186,
+      "content": "                binary_files_excluded += 1"
+    },
+    {
+      "line_number": 187,
+      "content": ""
+    },
+    {
+      "line_number": 188,
+      "content": "            if is_large:"
+    },
+    {
+      "line_number": 189,
+      "content": "                large_files_sampled += 1"
+    },
+    {
+      "line_number": 190,
+      "content": ""
+    },
+    {
+      "line_number": 191,
+      "content": "            categories[category] = categories.get(category, 0) + 1"
+    },
+    {
+      "line_number": 192,
+      "content": "            files_analyzed += 1"
+    },
+    {
+      "line_number": 193,
+      "content": ""
+    },
+    {
+      "line_number": 194,
+      "content": "            file_list.append({"
+    },
+    {
+      "line_number": 195,
+      "content": "                \"path\": rel_path_str,"
+    },
+    {
+      "line_number": 196,
+      "content": "                \"category\": category,"
+    },
+    {
+      "line_number": 197,
+      "content": "                \"size_bytes\": size_bytes,"
+    },
+    {
+      "line_number": 198,
+      "content": "                \"size_kb\": size_kb,"
+    },
+    {
+      "line_number": 199,
+      "content": "                \"is_binary\": is_bin,"
+    },
+    {
+      "line_number": 200,
+      "content": "                \"is_large\": is_large"
+    },
+    {
+      "line_number": 201,
+      "content": "            })"
+    },
+    {
+      "line_number": 202,
+      "content": ""
+    },
+    {
+      "line_number": 203,
+      "content": "    result = {"
+    },
+    {
+      "line_number": 204,
+      "content": "        \"repository_root\": str(root),"
+    },
+    {
+      "line_number": 205,
+      "content": "        \"total_files_discovered\": total_files_discovered,"
+    },
+    {
+      "line_number": 206,
+      "content": "        \"files_analyzed\": files_analyzed,"
+    },
+    {
+      "line_number": 207,
+      "content": "        \"binary_files_excluded\": binary_files_excluded,"
+    },
+    {
+      "line_number": 208,
+      "content": "        \"large_files_sampled\": large_files_sampled,"
+    },
+    {
+      "line_number": 209,
+      "content": "        \"ignored_directories_detected\": sorted(list(ignored_directories_found)),"
+    },
+    {
+      "line_number": 210,
+      "content": "        \"categories_summary\": categories,"
+    },
+    {
+      "line_number": 211,
+      "content": "        \"files\": file_list"
+    },
+    {
+      "line_number": 212,
+      "content": "    }"
+    },
+    {
+      "line_number": 213,
+      "content": "    return result"
+    }
+  ]
+}

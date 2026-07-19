@@ -1,0 +1,495 @@
+{
+  "repository_root": "D:\\GitHub-Skills\\inspect-skill",
+  "file_path": "scripts/analyze_repository_structure.py",
+  "total_file_lines": 158,
+  "requested_range": {
+    "start": 16,
+    "end": 135
+  },
+  "returned_range": {
+    "start": 16,
+    "end": 135
+  },
+  "lines": [
+    {
+      "line_number": 16,
+      "content": "ENTRY_POINT_PATTERNS = ["
+    },
+    {
+      "line_number": 17,
+      "content": "    r\"^main\\.(py|js|ts|go|rs|cpp|c|scala|kt)$\","
+    },
+    {
+      "line_number": 18,
+      "content": "    r\"^app\\.(py|js|ts|rb|php)$\","
+    },
+    {
+      "line_number": 19,
+      "content": "    r\"^server\\.(js|ts|py|go)$\","
+    },
+    {
+      "line_number": 20,
+      "content": "    r\"^index\\.(js|ts|html|php)$\","
+    },
+    {
+      "line_number": 21,
+      "content": "    r\"^manage\\.py$\","
+    },
+    {
+      "line_number": 22,
+      "content": "    r\"^Application\\.(java|kt)$\","
+    },
+    {
+      "line_number": 23,
+      "content": "    r\"^wsgi\\.py$\", r\"^asgi\\.py$\","
+    },
+    {
+      "line_number": 24,
+      "content": "    r\"^cli\\.(py|js|ts)$\""
+    },
+    {
+      "line_number": 25,
+      "content": "]"
+    },
+    {
+      "line_number": 26,
+      "content": ""
+    },
+    {
+      "line_number": 27,
+      "content": "MODULE_TYPE_PATTERNS = {"
+    },
+    {
+      "line_number": 28,
+      "content": "    \"controllers\": [r\"/controllers?/\", r\"/handlers?/\", r\"/endpoints?/\", r\"/routes?/\"],"
+    },
+    {
+      "line_number": 29,
+      "content": "    \"services\": [r\"/services?/\", r\"/providers?/\", r\"/usecases?/\"],"
+    },
+    {
+      "line_number": 30,
+      "content": "    \"models\": [r\"/models?/\", r\"/entities?/\", r\"/schemas?/\", r\"/domain/\"],"
+    },
+    {
+      "line_number": 31,
+      "content": "    \"views\": [r\"/views?/\", r\"/components?/\", r\"/pages?/\", r\"/ui/\"],"
+    },
+    {
+      "line_number": 32,
+      "content": "    \"middleware\": [r\"/middleware/\", r\"/interceptors?/\"],"
+    },
+    {
+      "line_number": 33,
+      "content": "    \"database\": [r\"/db/\", r\"/database/\", r\"/migrations?/\", r\"/repository/\"],"
+    },
+    {
+      "line_number": 34,
+      "content": "    \"utils\": [r\"/utils?/\", r\"/helpers?/\", r\"/common/\", r\"/shared/\"],"
+    },
+    {
+      "line_number": 35,
+      "content": "    \"config\": [r\"/config/\", r\"/settings/\"],"
+    },
+    {
+      "line_number": 36,
+      "content": "    \"tests\": [r\"/tests?/\", r\"/spec/\"],"
+    },
+    {
+      "line_number": 37,
+      "content": "    \"scripts\": [r\"/scripts?/\", r\"/bin/\"]"
+    },
+    {
+      "line_number": 38,
+      "content": "}"
+    },
+    {
+      "line_number": 39,
+      "content": ""
+    },
+    {
+      "line_number": 40,
+      "content": "ROUTE_DECLARATION_PATTERNS = ["
+    },
+    {
+      "line_number": 41,
+      "content": "    r'@app\\.(get|post|put|delete|patch)\\([\"\\']([^\"\\']+)[\"\\']',  # FastAPI / Flask"
+    },
+    {
+      "line_number": 42,
+      "content": "    r'router\\.(get|post|put|delete|patch)\\([\"\\']([^\"\\']+)[\"\\']', # Express / NestJS"
+    },
+    {
+      "line_number": 43,
+      "content": "    r'@([A-Z]\\w+Mapping)\\([\"\\']([^\"\\']+)[\"\\']',                  # Spring Boot"
+    },
+    {
+      "line_number": 44,
+      "content": "    r'r\\.(GET|POST|PUT|DELETE|PATCH)\\([\"\\']([^\"\\']+)[\"\\']',      # Gin (Go)"
+    },
+    {
+      "line_number": 45,
+      "content": "]"
+    },
+    {
+      "line_number": 46,
+      "content": ""
+    },
+    {
+      "line_number": 47,
+      "content": "def find_entry_points(root: Path) -> list:"
+    },
+    {
+      "line_number": 48,
+      "content": "    \"\"\"Locate application entry point files.\"\"\""
+    },
+    {
+      "line_number": 49,
+      "content": "    entry_points = []"
+    },
+    {
+      "line_number": 50,
+      "content": "    for file_path in root.glob(\"**/*\"):"
+    },
+    {
+      "line_number": 51,
+      "content": "        if any(p in file_path.parts for p in [\"node_modules\", \".git\", \"venv\", \".venv\", \"dist\", \"build\"]):"
+    },
+    {
+      "line_number": 52,
+      "content": "            continue"
+    },
+    {
+      "line_number": 53,
+      "content": "        if file_path.is_file():"
+    },
+    {
+      "line_number": 54,
+      "content": "            name = file_path.name"
+    },
+    {
+      "line_number": 55,
+      "content": "            for pat in ENTRY_POINT_PATTERNS:"
+    },
+    {
+      "line_number": 56,
+      "content": "                if re.match(pat, name, re.IGNORECASE):"
+    },
+    {
+      "line_number": 57,
+      "content": "                    rel_p = str(file_path.relative_to(root)).replace(\"\\\\\", \"/\")"
+    },
+    {
+      "line_number": 58,
+      "content": "                    entry_points.append({"
+    },
+    {
+      "line_number": 59,
+      "content": "                        \"path\": rel_p,"
+    },
+    {
+      "line_number": 60,
+      "content": "                        \"filename\": name,"
+    },
+    {
+      "line_number": 61,
+      "content": "                        \"type\": \"Application Entry Point\""
+    },
+    {
+      "line_number": 62,
+      "content": "                    })"
+    },
+    {
+      "line_number": 63,
+      "content": "                    break"
+    },
+    {
+      "line_number": 64,
+      "content": "    return entry_points"
+    },
+    {
+      "line_number": 65,
+      "content": ""
+    },
+    {
+      "line_number": 66,
+      "content": "def map_modules(root: Path) -> dict:"
+    },
+    {
+      "line_number": 67,
+      "content": "    \"\"\"Categorize repository files into architectural modules.\"\"\""
+    },
+    {
+      "line_number": 68,
+      "content": "    module_map = {k: [] for k in MODULE_TYPE_PATTERNS.keys()}"
+    },
+    {
+      "line_number": 69,
+      "content": "    module_map[\"other\"] = []"
+    },
+    {
+      "line_number": 70,
+      "content": ""
+    },
+    {
+      "line_number": 71,
+      "content": "    for file_path in root.glob(\"**/*\"):"
+    },
+    {
+      "line_number": 72,
+      "content": "        if any(p in file_path.parts for p in [\"node_modules\", \".git\", \"venv\", \".venv\", \"dist\", \"build\"]):"
+    },
+    {
+      "line_number": 73,
+      "content": "            continue"
+    },
+    {
+      "line_number": 74,
+      "content": "        if file_path.is_file():"
+    },
+    {
+      "line_number": 75,
+      "content": "            rel_p = str(file_path.relative_to(root)).replace(\"\\\\\", \"/\")"
+    },
+    {
+      "line_number": 76,
+      "content": "            matched = False"
+    },
+    {
+      "line_number": 77,
+      "content": "            for mod_type, patterns in MODULE_TYPE_PATTERNS.items():"
+    },
+    {
+      "line_number": 78,
+      "content": "                for pat in patterns:"
+    },
+    {
+      "line_number": 79,
+      "content": "                    if re.search(pat, f\"/{rel_p}/\", re.IGNORECASE):"
+    },
+    {
+      "line_number": 80,
+      "content": "                        module_map[mod_type].append(rel_p)"
+    },
+    {
+      "line_number": 81,
+      "content": "                        matched = True"
+    },
+    {
+      "line_number": 82,
+      "content": "                        break"
+    },
+    {
+      "line_number": 83,
+      "content": "                if matched:"
+    },
+    {
+      "line_number": 84,
+      "content": "                    break"
+    },
+    {
+      "line_number": 85,
+      "content": ""
+    },
+    {
+      "line_number": 86,
+      "content": "    return {k: v for k, v in module_map.items() if v}"
+    },
+    {
+      "line_number": 87,
+      "content": ""
+    },
+    {
+      "line_number": 88,
+      "content": "def discover_routes(root: Path) -> list:"
+    },
+    {
+      "line_number": 89,
+      "content": "    \"\"\"Scan code files to discover API route definitions.\"\"\""
+    },
+    {
+      "line_number": 90,
+      "content": "    discovered_routes = []"
+    },
+    {
+      "line_number": 91,
+      "content": "    for file_path in root.glob(\"**/*\"):"
+    },
+    {
+      "line_number": 92,
+      "content": "        if any(p in file_path.parts for p in [\"node_modules\", \".git\", \"venv\", \".venv\", \"dist\", \"build\"]):"
+    },
+    {
+      "line_number": 93,
+      "content": "            continue"
+    },
+    {
+      "line_number": 94,
+      "content": "        if file_path.suffix.lower() in [\".py\", \".js\", \".ts\", \".go\", \".java\"]:"
+    },
+    {
+      "line_number": 95,
+      "content": "            try:"
+    },
+    {
+      "line_number": 96,
+      "content": "                content = file_path.read_text(encoding=\"utf-8\", errors=\"ignore\")"
+    },
+    {
+      "line_number": 97,
+      "content": "                lines = content.splitlines()"
+    },
+    {
+      "line_number": 98,
+      "content": "                rel_p = str(file_path.relative_to(root)).replace(\"\\\\\", \"/\")"
+    },
+    {
+      "line_number": 99,
+      "content": ""
+    },
+    {
+      "line_number": 100,
+      "content": "                for idx, line in enumerate(lines, 1):"
+    },
+    {
+      "line_number": 101,
+      "content": "                    for pat in ROUTE_DECLARATION_PATTERNS:"
+    },
+    {
+      "line_number": 102,
+      "content": "                        match = re.search(pat, line)"
+    },
+    {
+      "line_number": 103,
+      "content": "                        if match:"
+    },
+    {
+      "line_number": 104,
+      "content": "                            method = match.group(1).upper()"
+    },
+    {
+      "line_number": 105,
+      "content": "                            endpoint = match.group(2)"
+    },
+    {
+      "line_number": 106,
+      "content": "                            discovered_routes.append({"
+    },
+    {
+      "line_number": 107,
+      "content": "                                \"method\": method,"
+    },
+    {
+      "line_number": 108,
+      "content": "                                \"endpoint\": endpoint,"
+    },
+    {
+      "line_number": 109,
+      "content": "                                \"defined_in\": rel_p,"
+    },
+    {
+      "line_number": 110,
+      "content": "                                \"line_number\": idx,"
+    },
+    {
+      "line_number": 111,
+      "content": "                                \"snippet\": line.strip()"
+    },
+    {
+      "line_number": 112,
+      "content": "                            })"
+    },
+    {
+      "line_number": 113,
+      "content": "            except Exception:"
+    },
+    {
+      "line_number": 114,
+      "content": "                continue"
+    },
+    {
+      "line_number": 115,
+      "content": ""
+    },
+    {
+      "line_number": 116,
+      "content": "    return discovered_routes"
+    },
+    {
+      "line_number": 117,
+      "content": ""
+    },
+    {
+      "line_number": 118,
+      "content": "def analyze_repository_structure(root_dir: str) -> dict:"
+    },
+    {
+      "line_number": 119,
+      "content": "    \"\"\"Main repository structure analysis.\"\"\""
+    },
+    {
+      "line_number": 120,
+      "content": "    root = Path(root_dir).resolve()"
+    },
+    {
+      "line_number": 121,
+      "content": "    if not root.exists():"
+    },
+    {
+      "line_number": 122,
+      "content": "        raise ValueError(f\"Directory not found: {root_dir}\")"
+    },
+    {
+      "line_number": 123,
+      "content": ""
+    },
+    {
+      "line_number": 124,
+      "content": "    entry_points = find_entry_points(root)"
+    },
+    {
+      "line_number": 125,
+      "content": "    modules = map_modules(root)"
+    },
+    {
+      "line_number": 126,
+      "content": "    routes = discover_routes(root)"
+    },
+    {
+      "line_number": 127,
+      "content": ""
+    },
+    {
+      "line_number": 128,
+      "content": "    return {"
+    },
+    {
+      "line_number": 129,
+      "content": "        \"repository_root\": str(root),"
+    },
+    {
+      "line_number": 130,
+      "content": "        \"entry_points\": entry_points,"
+    },
+    {
+      "line_number": 131,
+      "content": "        \"entry_points_count\": len(entry_points),"
+    },
+    {
+      "line_number": 132,
+      "content": "        \"module_architecture\": modules,"
+    },
+    {
+      "line_number": 133,
+      "content": "        \"discovered_routes_count\": len(routes),"
+    },
+    {
+      "line_number": 134,
+      "content": "        \"routes\": routes"
+    },
+    {
+      "line_number": 135,
+      "content": "    }"
+    }
+  ]
+}

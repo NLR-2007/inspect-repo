@@ -1,0 +1,15 @@
+flowchart LR
+    User["User or AI agent"] --> Skill["SKILL.md workflow"]
+    Skill --> Inventory["inventory_repository.py"]
+    Skill --> Tech["detect_technology_stack.py"]
+    Skill --> Structure["analyze_repository_structure.py"]
+    Skill --> Secrets["detect_secrets_safely.py"]
+    Skill --> Evidence["collect_code_evidence.py"]
+    Inventory --> JSON["JSON audit artifacts"]
+    Tech --> JSON
+    Structure --> JSON
+    Secrets --> JSON
+    Evidence --> JSON
+    JSON --> Docs["project-documentation Markdown suite"]
+    Docs --> Validator["validate_report_evidence.py"]
+    Validator --> Result["Validation result"]
