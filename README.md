@@ -9,24 +9,18 @@
 
 ---
 
-## 🚀 One-Command Skill Installation & Extraction
+## 🚀 One-Command Skill Installation
 
-Clone this repository directly into your agent skills directory to extract and install the **`inspect-repository`** skill:
+Clone this repository directly into your AI Agent's skills directory:
 
-### Option A: Standard Skills Directory
+### Global Agent Skills Directory
 ```bash
-git clone https://github.com/NLR-2007/inspect-repo.git ~/.gemini/skills/inspect-repository
+git clone https://github.com/NLR-2007/inspect-repo.git ~/.agent/skills/inspect-repository
 ```
 
-### Option B: Antigravity Skills Directory
+### Local Project Skills Directory
 ```bash
-git clone https://github.com/NLR-2007/inspect-repo.git ~/.gemini/antigravity/skills/inspect-repository
-```
-
-### Option C: Manual Download & Extract
-```bash
-# Clone to any folder and link to your skills path
-git clone https://github.com/NLR-2007/inspect-repo.git inspect-repository
+git clone https://github.com/NLR-2007/inspect-repo.git .agent/skills/inspect-repository
 ```
 
 ---
@@ -71,7 +65,7 @@ inspect-repo/                              # Repository & Skill Root
 │   ├── quality-scoring.md                  # 0-100 Production Readiness Methodology
 │   └── framework-analysis.md               # Ecosystem Framework Inspection Patterns
 └── assets/
-    ├── prompt.txt                          # Master Default Prompt Asset
+    ├── prompt.txt                          # Default Prompt Asset
     └── report-template.md                  # Markdown Report Template
 ```
 
