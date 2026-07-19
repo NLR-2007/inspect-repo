@@ -9,6 +9,28 @@
 
 ---
 
+## 🚀 One-Command Skill Installation & Extraction
+
+Clone this repository directly into your agent skills directory to extract and install the **`inspect-repository`** skill:
+
+### Option A: Standard Skills Directory
+```bash
+git clone https://github.com/NLR-2007/inspect-repo.git ~/.gemini/skills/inspect-repository
+```
+
+### Option B: Antigravity Skills Directory
+```bash
+git clone https://github.com/NLR-2007/inspect-repo.git ~/.gemini/antigravity/skills/inspect-repository
+```
+
+### Option C: Manual Download & Extract
+```bash
+# Clone to any folder and link to your skills path
+git clone https://github.com/NLR-2007/inspect-repo.git inspect-repository
+```
+
+---
+
 ## 🌟 Key Features
 
 - 🔎 **Deterministic File Inventory**: Classifies files across 22 categories, intelligently ignoring generated folders (`node_modules`, `.git`, `dist`, `target`, `venv`, `__pycache__`) while tracking total file counts and size metrics.
@@ -21,59 +43,43 @@
 
 ---
 
-## 📁 Repository & Skill Structure
+## 📁 Skill Directory Structure
 
 ```text
-inspect-repo/
-├── README.md                      # GitHub Repository Presentation
-├── LICENSE                        # GNU General Public License v3.0
-├── test_inspect_repository_scripts.py # Deterministic Script Test Suite
-└── inspect-repository/            # Production Agentic Skill Directory
-    ├── SKILL.md                   # Skill Core & 26-Step Execution Workflow
-    ├── prompt.txt                 # Master Default User Prompt
-    ├── LICENSE                    # Skill GPL-3.0 License
-    ├── agents/
-    │   └── openai.yaml            # Agent Metadata & Display Configuration
-    ├── scripts/
-    │   ├── inventory_repository.py         # File Categorization & Ignore Scanner
-    │   ├── detect_technology_stack.py      # Manifest & Import Evidence Scanner
-    │   ├── analyze_repository_structure.py # Entry Points & Route Mapper
-    │   ├── collect_code_evidence.py        # Safe Line Evidence Extractor
-    │   ├── detect_secrets_safely.py        # Safe Secret Auditor & Redactor
-    │   └── validate_report_evidence.py     # Markdown Evidence & Link Validator
-    ├── references/
-    │   ├── inspection-workflow.md          # 26-Step Inspection Operating Procedure
-    │   ├── technology-signatures.md        # 28 Tech Categories & Signature Catalog
-    │   ├── architecture-analysis.md        # Architectural Boundary Checklist
-    │   ├── diagram-guidelines.md           # Mermaid Syntax & Diagram Templates
-    │   ├── documentation-template.md       # 35-Section Document Suite Spec
-    │   ├── security-review.md              # OWASP Evaluation & Vulnerability Matrix
-    │   ├── quality-scoring.md              # 0-100 Production Readiness Methodology
-    │   └── framework-analysis.md           # Ecosystem Framework Inspection Patterns
-    └── assets/
-        ├── prompt.txt                      # Master Default Prompt Asset
-        └── report-template.md              # Markdown Report Template
+inspect-repo/                              # Repository & Skill Root
+├── SKILL.md                               # Skill Core & 26-Step Execution Workflow
+├── prompt.txt                             # Master Default User Prompt
+├── README.md                              # Skill Documentation & Presentation
+├── LICENSE                                # GNU General Public License v3.0
+├── test_inspect_repository_scripts.py     # Deterministic Script Test Suite
+├── agents/
+│   └── openai.yaml                        # Agent Metadata & Display Configuration
+├── scripts/
+│   ├── inventory_repository.py             # File Categorization & Ignore Scanner
+│   ├── detect_technology_stack.py          # Manifest & Import Evidence Scanner
+│   ├── analyze_repository_structure.py     # Entry Points & Route Mapper
+│   ├── collect_code_evidence.py            # Safe Line Evidence Extractor
+│   ├── detect_secrets_safely.py            # Safe Secret Auditor & Redactor
+│   └── validate_report_evidence.py         # Markdown Evidence & Link Validator
+├── references/
+│   ├── inspection-workflow.md              # 26-Step Inspection Operating Procedure
+│   ├── technology-signatures.md            # 28 Tech Categories & Signature Catalog
+│   ├── architecture-analysis.md            # Architectural Boundary Checklist
+│   ├── diagram-guidelines.md               # Mermaid Syntax & Diagram Templates
+│   ├── documentation-template.md           # 35-Section Document Suite Spec
+│   ├── security-review.md                  # OWASP Evaluation & Vulnerability Matrix
+│   ├── quality-scoring.md                  # 0-100 Production Readiness Methodology
+│   └── framework-analysis.md               # Ecosystem Framework Inspection Patterns
+└── assets/
+    ├── prompt.txt                          # Master Default Prompt Asset
+    └── report-template.md                  # Markdown Report Template
 ```
 
 ---
 
-## ⚡ Quick Start
+## 🎯 Master Trigger Prompt
 
-### 1. Installation
-
-Copy the `inspect-repository` directory into your personal agent skills path:
-
-```bash
-# Personal Skills Directory
-cp -r inspect-repository ~/.gemini/skills/inspect-repository
-
-# Antigravity Skills Directory
-cp -r inspect-repository ~/.gemini/antigravity/skills/inspect-repository
-```
-
-### 2. Master Trigger Prompt
-
-Use the included master prompt from [`prompt.txt`](inspect-repository/prompt.txt) to perform an exhaustive audit on any codebase:
+Use the master prompt from [`prompt.txt`](prompt.txt) to perform an exhaustive research audit on any codebase:
 
 ```text
 Perform an exhaustive, senior-level Full Research Audit of this repository using inspect-repository (RepoLens Research Inspector).
@@ -107,7 +113,7 @@ python test_inspect_repository_scripts.py
 Validating skill structure:
 
 ```bash
-python quick_validate.py inspect-repository
+python quick_validate.py .
 ```
 
 ---

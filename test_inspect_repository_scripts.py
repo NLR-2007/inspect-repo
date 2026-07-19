@@ -19,7 +19,7 @@ import tempfile
 import subprocess
 from pathlib import Path
 
-SKILL_DIR = Path(__file__).parent / "inspect-repository"
+SKILL_DIR = Path(__file__).parent
 SCRIPTS_DIR = SKILL_DIR / "scripts"
 
 def run_script(script_name: str, args: list) -> tuple:
