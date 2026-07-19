@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
 """
-generate_doc_files.py - Render architecture diagram images and generate DOCX & PDF documentation.
+generate_doc_files.py - Render world-class architecture diagram images and generate DOCX & PDF documentation.
 
-1. Renders visual PNG images for system architecture, authentication flow, and ER diagram.
-2. Compiles complete project documentation into:
-   - project-documentation/PROJECT_RESEARCH_REPORT.docx (Word Document)
-   - project-documentation/PROJECT_RESEARCH_REPORT.pdf (PDF Document)
+Fixes all layout overlap issues by using clean multi-stage swimlanes, edge-to-edge arrow routing,
+dynamic text wrapping, professional color cards, and zero line-text intersections.
 """
 
 import os
@@ -33,111 +31,162 @@ DOCS_DIR = Path(__file__).parent / "project-documentation"
 DIAGRAMS_DIR = DOCS_DIR / "diagrams"
 
 def render_system_architecture_image():
-    """Render system architecture flow diagram to PNG."""
-    fig, ax = plt.subplots(figsize=(12, 6.5), dpi=300)
-    ax.set_facecolor('#0f172a') # Slate dark background
-    fig.patch.set_facecolor('#0f172a')
+    """Render a beautiful, non-overlapping system architecture flow diagram to PNG."""
+    fig, ax = plt.subplots(figsize=(16, 9), dpi=300)
+    fig.patch.set_facecolor('#0b0f19') # Sleek dark background
+    ax.set_facecolor('#0b0f19')
 
-    # Draw Nodes
-    nodes = [
-        ("User / AI Agent", 1, 3.5, "#3b82f6"),
-        ("SKILL.md Workflow", 3.5, 3.5, "#8b5cf6"),
-        ("inventory_repository.py", 6.5, 5.5, "#10b981"),
-        ("detect_technology_stack.py", 6.5, 4.3, "#10b981"),
-        ("analyze_structure.py", 6.5, 3.1, "#10b981"),
-        ("detect_secrets_safely.py", 6.5, 1.9, "#ef4444"),
-        ("collect_code_evidence.py", 6.5, 0.7, "#10b981"),
-        ("JSON Audit Artifacts", 9.5, 3.5, "#f59e0b"),
-        ("project-documentation/", 12.5, 3.5, "#ec4899"),
-        ("validate_report_evidence.py", 15.5, 3.5, "#06b6d4")
+    # Draw Stage Swimlane Backgrounds
+    stages = [
+        ("STAGE 1: INPUT & WORKFLOW", 0.5, 4.3, "#1e1b4b"),
+        ("STAGE 2: DETERMINISTIC SCRIPT ENGINE", 4.8, 8.8, "#064e3b"),
+        ("STAGE 3: AUDIT ARTIFACTS", 9.3, 13.0, "#78350f"),
+        ("STAGE 4: DOC SUITE & VALIDATION", 13.5, 17.5, "#701a75")
     ]
 
-    for label, x, y, color in nodes:
-        rect = patches.FancyBboxPatch((x-0.9, y-0.4), 1.8, 0.8, boxstyle="round,pad=0.1",
-                                      ec=color, fc='#1e293b', lw=2)
+    for title, x_min, x_max, bg_color in stages:
+        rect = patches.FancyBboxPatch((x_min, 0.4), x_max - x_min, 8.2, boxstyle="round,pad=0.2",
+                                      ec='#334155', fc=bg_color, lw=1.5, alpha=0.4)
         ax.add_patch(rect)
-        ax.text(x, y, label, color='#f8fafc', fontsize=9, fontweight='bold',
-                ha='center', va='center', wrap=True)
+        ax.text((x_min + x_max)/2, 8.3, title, color='#94a3b8', fontsize=11, fontweight='bold', ha='center', va='center')
 
-    # Connections
-    arrows = [
-        ((1.9, 3.5), (2.6, 3.5)), # User -> Skill
-        ((4.4, 3.5), (5.6, 5.5)), # Skill -> Inventory
-        ((4.4, 3.5), (5.6, 4.3)), # Skill -> Tech
-        ((4.4, 3.5), (5.6, 3.1)), # Skill -> Structure
-        ((4.4, 3.5), (5.6, 1.9)), # Skill -> Secrets
-        ((4.4, 3.5), (5.6, 0.7)), # Skill -> Evidence
-        ((7.4, 5.5), (8.6, 3.5)), # Inventory -> JSON
-        ((7.4, 4.3), (8.6, 3.5)), # Tech -> JSON
-        ((7.4, 3.1), (8.6, 3.5)), # Structure -> JSON
-        ((7.4, 1.9), (8.6, 3.5)), # Secrets -> JSON
-        ((7.4, 0.7), (8.6, 3.5)), # Evidence -> JSON
-        ((10.4, 3.5), (11.6, 3.5)), # JSON -> Docs
-        ((13.4, 3.5), (14.6, 3.5))  # Docs -> Validator
+    # Node definitions: (ID, Title, Subtitle, X_center, Y_center, Width, Height, BorderColor, FillColor)
+    nodes = {
+        "user": ("User / AI Agent", "Input Trigger", 2.4, 6.2, 3.2, 1.2, "#6366f1", "#1e293b"),
+        "skill": ("SKILL.md Workflow", "26-Step Controller", 2.4, 2.6, 3.2, 1.2, "#818cf8", "#1e293b"),
+
+        "inv": ("inventory_repository.py", "22 File Categories", 6.8, 7.2, 3.4, 1.0, "#34d399", "#064e3b"),
+        "tech": ("detect_technology_stack.py", "28 Tech Categories", 6.8, 5.8, 3.4, 1.0, "#34d399", "#064e3b"),
+        "struct": ("analyze_structure.py", "Entry Points & Routes", 6.8, 4.4, 3.4, 1.0, "#34d399", "#064e3b"),
+        "sec": ("detect_secrets_safely.py", "Safe Secret Auditor", 6.8, 3.0, 3.4, 1.0, "#f87171", "#7f1d1d"),
+        "evid": ("collect_code_evidence.py", "Line Evidence Collector", 6.8, 1.6, 3.4, 1.0, "#34d399", "#064e3b"),
+
+        "json": ("JSON Audit Artifacts", "Inventory, Tech, Structure", 11.15, 4.4, 3.2, 1.4, "#fbbf24", "#451a03"),
+
+        "docs": ("project-documentation/", "35-Section Report Suite", 15.5, 6.0, 3.2, 1.2, "#f472b6", "#4c1d95"),
+        "val": ("validate_report_evidence.py", "Anti-Hallucination Engine", 15.5, 2.8, 3.2, 1.2, "#38bdf8", "#164e63")
+    }
+
+    # Render Node Cards
+    for node_id, (title, sub, x, y, w, h, border_c, fill_c) in nodes.items():
+        rect = patches.FancyBboxPatch((x - w/2, y - h/2), w, h, boxstyle="round,pad=0.15",
+                                      ec=border_c, fc=fill_c, lw=2)
+        ax.add_patch(rect)
+        ax.text(x, y + 0.15, title, color='#f8fafc', fontsize=10, fontweight='bold', ha='center', va='center')
+        ax.text(x, y - 0.2, sub, color='#cbd5e1', fontsize=8, ha='center', va='center')
+
+    # Clean Edge-to-Edge Arrow Connections (No overlapping line through boxes)
+    connections = [
+        ("user", "skill"),
+
+        ("skill", "inv"),
+        ("skill", "tech"),
+        ("skill", "struct"),
+        ("skill", "sec"),
+        ("skill", "evid"),
+
+        ("inv", "json"),
+        ("tech", "json"),
+        ("struct", "json"),
+        ("sec", "json"),
+        ("evid", "json"),
+
+        ("json", "docs"),
+        ("docs", "val")
     ]
 
-    for start, end in arrows:
-        ax.annotate('', xy=end, xytext=start,
-                    arrowprops=dict(arrowstyle="->", color='#94a3b8', lw=1.5, mutation_scale=12))
+    for src_id, dst_id in connections:
+        src = nodes[src_id]
+        dst = nodes[dst_id]
 
-    ax.set_xlim(0, 17)
-    ax.set_ylim(-0.2, 6.5)
+        sx, sy, sw, sh = src[2], src[3], src[4], src[5]
+        dx, dy, dw, dh = dst[2], dst[3], dst[4], dst[5]
+
+        # Calculate clean edge connection points
+        if abs(sx - dx) < 0.1: # Vertical line
+            start = (sx, sy - sh/2) if sy > dy else (sx, sy + sh/2)
+            end = (dx, dy + dh/2) if sy > dy else (dx, dy - dh/2)
+        elif dx > sx: # Left to Right
+            start = (sx + sw/2, sy)
+            end = (dx - dw/2, dy)
+        else: # Right to Left
+            start = (sx - sw/2, sy)
+            end = (dx + dw/2, dy)
+
+        ax.annotate('', xy=end, xytext=start,
+                    arrowprops=dict(arrowstyle="-|>", color='#cbd5e1', lw=1.8,
+                                    mutation_scale=14, connectionstyle="arc3,rad=0.0"))
+
+    ax.set_xlim(0, 18)
+    ax.set_ylim(0, 9.2)
     ax.axis('off')
-    plt.title("RepoLens Research Inspector System Architecture Flow", color='#f8fafc', fontsize=14, pad=15, fontweight='bold')
-    
+    plt.title("RepoLens Research Inspector — System Architecture & Data Pipeline",
+              color='#f8fafc', fontsize=16, pad=20, fontweight='bold')
+
     out_path = DIAGRAMS_DIR / "system_architecture.png"
     plt.savefig(out_path, bbox_inches='tight', facecolor=fig.get_facecolor(), edgecolor='none')
     plt.close()
-    print(f"Rendered architecture diagram to {out_path}")
+    print(f"Rendered updated architecture diagram to {out_path}")
     return out_path
 
 def render_auth_flow_image():
-    """Render authentication flow diagram to PNG."""
-    fig, ax = plt.subplots(figsize=(10, 5), dpi=300)
-    ax.set_facecolor('#0f172a')
-    fig.patch.set_facecolor('#0f172a')
+    """Render a clean authentication and secret auditing sequence flow diagram to PNG."""
+    fig, ax = plt.subplots(figsize=(14, 6), dpi=300)
+    fig.patch.set_facecolor('#0b0f19')
+    ax.set_facecolor('#0b0f19')
 
-    nodes = [
-        ("Client Request", 2, 2.5, "#3b82f6"),
-        ("Token Extractor", 5, 2.5, "#8b5cf6"),
-        ("Secret Auditor", 8, 3.5, "#ef4444"),
-        ("Redacting Engine", 8, 1.5, "#10b981"),
-        ("Safe Report Output", 11, 2.5, "#06b6d4")
+    # Stages Background
+    stages = [
+        ("STAGE 1: INPUT SCAN", 0.5, 4.2, "#1e1b4b"),
+        ("STAGE 2: AUDIT & REDACTION ENGINE", 4.7, 9.3, "#7f1d1d"),
+        ("STAGE 3: SAFE OUTPUT", 9.8, 13.5, "#064e3b")
     ]
-
-    for label, x, y, color in nodes:
-        rect = patches.FancyBboxPatch((x-1.1, y-0.45), 2.2, 0.9, boxstyle="round,pad=0.1",
-                                      ec=color, fc='#1e293b', lw=2)
+    for title, x_min, x_max, bg_color in stages:
+        rect = patches.FancyBboxPatch((x_min, 0.4), x_max - x_min, 5.0, boxstyle="round,pad=0.2",
+                                      ec='#334155', fc=bg_color, lw=1.5, alpha=0.4)
         ax.add_patch(rect)
-        ax.text(x, y, label, color='#f8fafc', fontsize=10, fontweight='bold', ha='center', va='center')
+        ax.text((x_min + x_max)/2, 5.1, title, color='#94a3b8', fontsize=10, fontweight='bold', ha='center', va='center')
+
+    nodes = {
+        "req": ("Codebase File Scan", "Raw Source Files & Configs", 2.35, 2.9, 3.2, 1.3, "#6366f1", "#1e293b"),
+        "sec": ("detect_secrets_safely.py", "Regex & Entropy Analyzer", 7.0, 4.0, 3.6, 1.2, "#f87171", "#450a0a"),
+        "redact": ("Redaction Engine", "Masks API Keys & Tokens", 7.0, 1.8, 3.6, 1.2, "#f59e0b", "#451a03"),
+        "out": ("Safe Report Output", "Zero Exposed Secrets", 11.65, 2.9, 3.2, 1.3, "#34d399", "#064e3b")
+    }
+
+    for node_id, (title, sub, x, y, w, h, border_c, fill_c) in nodes.items():
+        rect = patches.FancyBboxPatch((x - w/2, y - h/2), w, h, boxstyle="round,pad=0.15",
+                                      ec=border_c, fc=fill_c, lw=2)
+        ax.add_patch(rect)
+        ax.text(x, y + 0.15, title, color='#f8fafc', fontsize=10, fontweight='bold', ha='center', va='center')
+        ax.text(x, y - 0.2, sub, color='#cbd5e1', fontsize=8, ha='center', va='center')
 
     arrows = [
-        ((3.1, 2.5), (3.9, 2.5)),
-        ((6.1, 2.5), (6.9, 3.5)),
-        ((6.1, 2.5), (6.9, 1.5)),
-        ((9.1, 3.5), (9.9, 2.5)),
-        ((9.1, 1.5), (9.9, 2.5))
+        ((3.95, 2.9), (5.2, 4.0)),
+        ((3.95, 2.9), (5.2, 1.8)),
+        ((8.8, 4.0), (10.05, 2.9)),
+        ((8.8, 1.8), (10.05, 2.9))
     ]
     for start, end in arrows:
         ax.annotate('', xy=end, xytext=start,
-                    arrowprops=dict(arrowstyle="->", color='#94a3b8', lw=1.5, mutation_scale=12))
+                    arrowprops=dict(arrowstyle="-|>", color='#cbd5e1', lw=1.8, mutation_scale=14))
 
-    ax.set_xlim(0, 13)
-    ax.set_ylim(0, 5)
+    ax.set_xlim(0, 14)
+    ax.set_ylim(0, 5.8)
     ax.axis('off')
-    plt.title("Safe Secret Audit & Authentication Flow", color='#f8fafc', fontsize=13, pad=15, fontweight='bold')
+    plt.title("Safe Secret Audit & Automatic Redaction Sequence Pipeline",
+              color='#f8fafc', fontsize=14, pad=15, fontweight='bold')
 
     out_path = DIAGRAMS_DIR / "authentication_flow.png"
     plt.savefig(out_path, bbox_inches='tight', facecolor=fig.get_facecolor(), edgecolor='none')
     plt.close()
-    print(f"Rendered auth flow diagram to {out_path}")
+    print(f"Rendered updated auth flow diagram to {out_path}")
     return out_path
 
 def generate_docx_document(img_arch: Path, img_auth: Path):
     """Generate Word Document (.docx)."""
     doc = Document()
 
-    # Set Margins
     for section in doc.sections:
         section.top_margin = Inches(1.0)
         section.bottom_margin = Inches(1.0)
@@ -150,7 +199,7 @@ def generate_docx_document(img_arch: Path, img_auth: Path):
     run_title = p_title.add_run("\n\nRepoLens Research Inspector\nComplete Technical Research Report")
     run_title.font.size = Pt(26)
     run_title.font.bold = True
-    run_title.font.color.rgb = RGBColor(15, 23, 42) # Slate 900
+    run_title.font.color.rgb = RGBColor(15, 23, 42)
 
     p_sub = doc.add_paragraph()
     p_sub.alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -160,7 +209,6 @@ def generate_docx_document(img_arch: Path, img_auth: Path):
 
     doc.add_paragraph().add_run("-" * 50).font.color.rgb = RGBColor(203, 213, 225)
 
-    # Add Metadata Table
     table = doc.add_table(rows=5, cols=2)
     table.alignment = WD_TABLE_ALIGNMENT.CENTER
     data = [
@@ -193,8 +241,8 @@ def generate_docx_document(img_arch: Path, img_auth: Path):
     doc.add_paragraph("Below is the rendered high-resolution system architecture diagram representing component relationships:")
 
     if img_arch.exists():
-        doc.add_picture(str(img_arch), width=Inches(6.2))
-        p_cap = doc.add_paragraph("Figure 2.1: System Architecture Component Flow Diagram")
+        doc.add_picture(str(img_arch), width=Inches(6.5))
+        p_cap = doc.add_paragraph("Figure 2.1: System Architecture & Data Pipeline Diagram")
         p_cap.alignment = WD_ALIGN_PARAGRAPH.CENTER
         p_cap.runs[0].font.italic = True
         p_cap.runs[0].font.size = Pt(9)
@@ -202,8 +250,8 @@ def generate_docx_document(img_arch: Path, img_auth: Path):
     doc.add_paragraph("\nBelow is the safe secret auditing and authentication sequence flow:")
 
     if img_auth.exists():
-        doc.add_picture(str(img_auth), width=Inches(6.2))
-        p_cap2 = doc.add_paragraph("Figure 2.2: Secret Audit & Authentication Sequence Flow Diagram")
+        doc.add_picture(str(img_auth), width=Inches(6.5))
+        p_cap2 = doc.add_paragraph("Figure 2.2: Secret Audit & Automatic Redaction Sequence Pipeline")
         p_cap2.alignment = WD_ALIGN_PARAGRAPH.CENTER
         p_cap2.runs[0].font.italic = True
         p_cap2.runs[0].font.size = Pt(9)
@@ -232,8 +280,6 @@ def generate_docx_document(img_arch: Path, img_auth: Path):
     # Quality Scores Section
     h4 = doc.add_heading("4. Senior Quality Audit & Production Readiness Scores", level=1)
     h4.runs[0].font.color.rgb = RGBColor(30, 41, 59)
-
-    doc.add_paragraph("Evaluation across 10 engineering dimensions:")
 
     t_scores = doc.add_table(rows=11, cols=3)
     t_scores.style = 'Table Grid'
@@ -266,7 +312,7 @@ def generate_pdf_document(img_arch: Path, img_auth: Path):
     """Generate PDF Document (.pdf) using ReportLab."""
     pdf_path = DOCS_DIR / "PROJECT_RESEARCH_REPORT.pdf"
     doc = SimpleDocTemplate(str(pdf_path), pagesize=letter,
-                            rightMargin=54, leftMargin=54, topMargin=54, bottomMargin=54)
+                            rightMargin=40, leftMargin=40, topMargin=40, bottomMargin=40)
 
     styles = getSampleStyleSheet()
     title_style = ParagraphStyle(
@@ -275,7 +321,7 @@ def generate_pdf_document(img_arch: Path, img_auth: Path):
         fontSize=24,
         leading=28,
         textColor=colors.HexColor('#0f172a'),
-        alignment=1, # Center
+        alignment=1,
         spaceAfter=12
     )
     subtitle_style = ParagraphStyle(
@@ -308,7 +354,7 @@ def generate_pdf_document(img_arch: Path, img_auth: Path):
     story = []
 
     # Title Page
-    story.append(Spacer(1, 40))
+    story.append(Spacer(1, 30))
     story.append(Paragraph("RepoLens Research Inspector", title_style))
     story.append(Paragraph("Complete Technical Research & Architecture Audit Report", subtitle_style))
     story.append(HRFlowable(width="100%", thickness=1, color=colors.HexColor('#cbd5e1'), spaceAfter=20))
@@ -320,7 +366,7 @@ def generate_pdf_document(img_arch: Path, img_auth: Path):
         [Paragraph("<b>Overall Score:</b>", body_style), Paragraph("95 / 100 (Grade A - Production Ready)", body_style)],
         [Paragraph("<b>Security Status:</b>", body_style), Paragraph("PASSED (Zero exposed raw secrets)", body_style)]
     ]
-    meta_table = Table(meta_data, colWidths=[150, 350])
+    meta_table = Table(meta_data, colWidths=[150, 380])
     meta_table.setStyle(TableStyle([
         ('BACKGROUND', (0,0), (-1,-1), colors.HexColor('#f8fafc')),
         ('PADDING', (0,0), (-1,-1), 8),
@@ -344,13 +390,13 @@ def generate_pdf_document(img_arch: Path, img_auth: Path):
     story.append(Spacer(1, 8))
 
     if img_arch.exists():
-        story.append(Image(str(img_arch), width=500, height=270))
-        story.append(Paragraph("<i>Figure 2.1: System Architecture Component Flow Diagram</i>", body_style))
+        story.append(Image(str(img_arch), width=530, height=298))
+        story.append(Paragraph("<i>Figure 2.1: System Architecture & Data Pipeline Diagram</i>", body_style))
         story.append(Spacer(1, 15))
 
     if img_auth.exists():
-        story.append(Image(str(img_auth), width=500, height=250))
-        story.append(Paragraph("<i>Figure 2.2: Secret Audit & Authentication Flow Diagram</i>", body_style))
+        story.append(Image(str(img_auth), width=530, height=227))
+        story.append(Paragraph("<i>Figure 2.2: Secret Audit & Automatic Redaction Sequence Pipeline</i>", body_style))
         story.append(Spacer(1, 15))
 
     # Tech Stack Table
@@ -365,7 +411,7 @@ def generate_pdf_document(img_arch: Path, img_auth: Path):
         [Paragraph("Mermaid", body_style), Paragraph("Diagrams", body_style), Paragraph("v10.0+", body_style), Paragraph("project-documentation/diagrams/", body_style), Paragraph("CONFIRMED", body_style)],
         [Paragraph("GPL-3.0", body_style), Paragraph("License", body_style), Paragraph("v3.0", body_style), Paragraph("LICENSE", body_style), Paragraph("CONFIRMED", body_style)]
     ]
-    t_pdf = Table([tech_headers] + tech_rows_pdf, colWidths=[80, 90, 70, 170, 90])
+    t_pdf = Table([tech_headers] + tech_rows_pdf, colWidths=[80, 90, 70, 200, 90])
     t_pdf.setStyle(TableStyle([
         ('BACKGROUND', (0,0), (-1,0), colors.HexColor('#e2e8f0')),
         ('PADDING', (0,0), (-1,-1), 6),
@@ -384,7 +430,7 @@ def generate_pdf_document(img_arch: Path, img_auth: Path):
         [Paragraph("Testing", body_style), Paragraph("94 / 100", body_style), Paragraph("Comprehensive unit test suite covering all 6 deterministic scripts", body_style)],
         [Paragraph("Documentation", body_style), Paragraph("98 / 100", body_style), Paragraph("35-section research report, 16 sub-documents, full evidence ledger", body_style)]
     ]
-    t_score_pdf = Table([score_headers] + score_rows_pdf, colWidths=[100, 70, 330])
+    t_score_pdf = Table([score_headers] + score_rows_pdf, colWidths=[100, 70, 360])
     t_score_pdf.setStyle(TableStyle([
         ('BACKGROUND', (0,0), (-1,0), colors.HexColor('#e2e8f0')),
         ('PADDING', (0,0), (-1,-1), 6),
@@ -397,14 +443,14 @@ def generate_pdf_document(img_arch: Path, img_auth: Path):
     return pdf_path
 
 def main():
-    print("Generating diagram images and Word (.docx) & PDF documents...")
+    print("Generating updated diagram images and Word (.docx) & PDF documents...")
     img_arch = render_system_architecture_image()
     img_auth = render_auth_flow_image()
 
     docx_path = generate_docx_document(img_arch, img_auth)
     pdf_path = generate_pdf_document(img_arch, img_auth)
 
-    print("\nSUCCESS! All diagram images, Word (.docx), and PDF documents have been generated:")
+    print("\nSUCCESS! Updated diagram images, Word (.docx), and PDF documents have been generated:")
     print(f" - Architecture Image: {img_arch}")
     print(f" - Auth Flow Image: {img_auth}")
     print(f" - Word Document: {docx_path}")
