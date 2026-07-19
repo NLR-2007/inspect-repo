@@ -1,0 +1,35 @@
+Perform an exhaustive, senior-level Full Research Audit of this repository using inspect-repository (RepoLens Research Inspector).
+
+Your objective is to thoroughly inspect every file, directory, module, framework, database schema, API route, infrastructure configuration, and CI/CD pipeline in this project folder, and generate a production-grade documentation suite inside project-documentation/.
+
+Execute the full 26-step inspection workflow with total accuracy and zero hallucinations:
+
+1. REPOSITORY INVENTORY & FILE MAP:
+   - Run inventory_repository.py to catalog every file into source code, configuration, dependency manifests, lock files, database schemas, migrations, scripts, tests, infrastructure, static assets, and containers.
+   - Summarize ignored dependency folders (node_modules, .git, target, venv, dist, build) and file size metrics.
+
+2. EVIDENCE-BASED TECH STACK IDENTIFICATION:
+   - Run detect_technology_stack.py across manifests, lockfiles, Dockerfiles, and code imports.
+   - Report exact detected versions, evidence file paths, line numbers, and confidence classifications (CONFIRMED, HIGH, MEDIUM, LOW, NOT FOUND) for all 28 technology categories.
+
+3. ARCHITECTURE & MODULE MAP:
+   - Run analyze_repository_structure.py to locate entry points, services, controllers, routes, schemas, domain models, middleware, and background workers.
+   - Explain module separation of concerns, public interfaces, and component dependencies.
+
+4. ENDPOINT, API & DATABASE ANALYSIS:
+   - Document all REST, GraphQL, gRPC, WebSocket, and webhook endpoints with HTTP methods, auth requirements, parameters, and calling code line numbers.
+   - Analyze database engines, ORM entities, migrations, ER relationships, index coverage, and query performance risks.
+
+5. SAFE SECURITY & AUDIT SCAN:
+   - Run detect_secrets_safely.py to audit API keys, credentials, tokens, and private keys. Ensure 100% secret redaction in all outputs.
+   - Evaluate authentication, RBAC/ABAC authorization, input validation, and OWASP Top 10 risks.
+
+6. EDITABLE MERMAID ARCHITECTURE DIAGRAMS:
+   - Create evidence-based Mermaid diagrams for System Architecture, Request/Auth Flow Sequence, and Database ER model.
+
+7. SENIOR QUALITY & PRODUCTION READINESS SCORING:
+   - Provide evidence-backed 0-100 scores across 10 evaluation dimensions (Architecture, Code Quality, Security, Testing, Documentation, Performance, Scalability, Maintainability, Observability, Deployment Readiness).
+
+8. COMPLETE DOCUMENTATION DELIVERABLE:
+   - Generate project-documentation/PROJECT_RESEARCH_REPORT.md containing all 35 required sections, plus modular sub-documents and evidence ledger linking every claim to exact file lines.
+   - Run validate_report_evidence.py to confirm zero broken links or raw secrets before completing turn.

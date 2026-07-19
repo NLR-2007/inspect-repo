@@ -1,0 +1,4 @@
+interface:
+  display_name: RepoLens Research Inspector
+  short_description: Inspect repositories and create evidence-based technical documentation.
+  default_prompt: Inspect this repository using a full research audit. Identify the complete technology stack, explain the architecture and application flows, create useful diagrams, document APIs and databases, evaluate security and production readiness, and support every important conclusion with repository evidence.
